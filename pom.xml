@@ -59,6 +59,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
+    <basestarter.version>1.0.3</basestarter.version>
     <springboot.version>2.2.4.RELEASE</springboot.version>
     <micrometer.version>1.4.0</micrometer.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
@@ -71,6 +72,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>no.skatteetaten.aurora.springboot</groupId>
+      <artifactId>aurora-spring-boot-base-starter</artifactId>
+      <version>${basestarter.version}</version>
+    </dependency>
     <dependency>
       <groupId>no.skatteetaten.aurora</groupId>
       <artifactId>aurora-header-mdc-filter</artifactId>
