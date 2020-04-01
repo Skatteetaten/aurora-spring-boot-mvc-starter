@@ -15,6 +15,7 @@ public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
             String id = RequestKorrelasjon.getId();
             if(id == null || id.isEmpty()) {
                 id = UUID.randomUUID().toString();
+                RequestKorrelasjon.setId(id);
             }
 
             request.getHeaders().add(AuroraHeaderFilter.KORRELASJONS_ID, id);
