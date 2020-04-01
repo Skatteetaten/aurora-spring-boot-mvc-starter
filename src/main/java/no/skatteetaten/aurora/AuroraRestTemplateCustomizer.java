@@ -12,8 +12,8 @@ import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon;
 
 public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
 
-    public static final String KLIENTID = "Klientid";
-    public static final String MELDINGSID = "Meldingsid";
+    public static final String KLIENT_ID = "Klientid";
+    public static final String MELDINGS_ID = "Meldingsid";
 
     @Value("${spring.application.name:}")
     private String name;
@@ -23,7 +23,7 @@ public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
         restTemplate.getInterceptors().add((request, body, execution) -> {
             addCorrelationId(request);
             addClientId(request);
-            addMeldingsid(request);
+            addMessageId(request);
             return execution.execute(request, body);
         });
     }
@@ -39,11 +39,11 @@ public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
 
     private void addClientId(HttpRequest request) {
         if(name != null) {
-            request.getHeaders().add(KLIENTID, name);
+            request.getHeaders().add(KLIENT_ID, name);
         }
     }
 
-    private void addMeldingsid(HttpRequest request) {
-        request.getHeaders().add(MELDINGSID, UUID.randomUUID().toString());
+    private void addMessageId(HttpRequest request) {
+        request.getHeaders().add(MELDINGS_ID, UUID.randomUUID().toString());
     }
 }
