@@ -60,7 +60,8 @@
     <maven.compiler.target>11</maven.compiler.target>
 
     <basestarter.version>1.0.3</basestarter.version>
-    <springboot.version>2.2.4.RELEASE</springboot.version>
+    <springboot.version>2.2.6.RELEASE</springboot.version>
+    <sleuth.version>Hoxton.SR3</sleuth.version>
     <micrometer.version>1.4.0</micrometer.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
 
@@ -69,13 +70,31 @@
     <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
     <junit.version>5.6.0</junit.version>
     <assertk.version>0.21</assertk.version>
+    <mockmvcext.version>1.0.10</mockmvcext.version>
+    <okhttp.version>4.4.0</okhttp.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${sleuth.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
       <groupId>no.skatteetaten.aurora.springboot</groupId>
       <artifactId>aurora-spring-boot-base-starter</artifactId>
       <version>${basestarter.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
     <dependency>
       <groupId>no.skatteetaten.aurora</groupId>
@@ -116,6 +135,24 @@
       <groupId>com.willowtreeapps.assertk</groupId>
       <artifactId>assertk-jvm</artifactId>
       <version>${assertk.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>no.skatteetaten.aurora</groupId>
+      <artifactId>mockmvc-extensions-kotlin</artifactId>
+      <version>${mockmvcext.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>mockwebserver</artifactId>
+      <version>${okhttp.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>${okhttp.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
