@@ -4,7 +4,9 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
-import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter
+import no.skatteetaten.aurora.AuroraRestTemplateCustomizer.KLIENTID
+import no.skatteetaten.aurora.AuroraRestTemplateCustomizer.MELDINGSID
+import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon
 import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
 import okhttp3.mockwebserver.MockWebServer
@@ -45,7 +47,16 @@ class MvcStarterApplicationConfigTest {
             restTemplate.getForEntity<String>("http://localhost:${server.port}")
         }.first()
 
-        assertThat(request?.headers?.get(AuroraHeaderFilter.KORRELASJONS_ID))
+        val headers = request?.headers!!
+        assertThat(headers[KORRELASJONS_ID])
+            .isNotNull()
+            .isNotEmpty()
+
+        assertThat(headers[KLIENTID])
+            .isNotNull()
+            .isEqualTo("mvc-starter")
+
+        assertThat(headers[MELDINGSID])
             .isNotNull()
             .isNotEmpty()
     }
@@ -58,7 +69,7 @@ class MvcStarterApplicationConfigTest {
             restTemplate.getForEntity<String>("http://localhost:${server.port}")
         }.first()
 
-        assertThat(request?.headers?.get(AuroraHeaderFilter.KORRELASJONS_ID))
+        assertThat(request?.headers?.get(KORRELASJONS_ID))
             .isNotNull()
             .isEqualTo("123")
 
