@@ -2,7 +2,6 @@ package no.skatteetaten.aurora;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.client.RestTemplate;
@@ -15,8 +14,11 @@ public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
     public static final String KLIENT_ID = "Klientid";
     public static final String MELDINGS_ID = "Meldingsid";
 
-    @Value("${spring.application.name:}")
-    private String name;
+    private final String appName;
+
+    public AuroraRestTemplateCustomizer(String appName) {
+        this.appName = appName;
+    }
 
     @Override
     public void customize(RestTemplate restTemplate) {
@@ -38,8 +40,8 @@ public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
     }
 
     private void addClientId(HttpRequest request) {
-        if(name != null) {
-            request.getHeaders().add(KLIENT_ID, name);
+        if(appName != null) {
+            request.getHeaders().add(KLIENT_ID, appName);
         }
     }
 

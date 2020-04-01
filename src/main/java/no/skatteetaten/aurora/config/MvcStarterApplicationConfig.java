@@ -1,5 +1,6 @@
 package no.skatteetaten.aurora.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -24,8 +25,8 @@ public class MvcStarterApplicationConfig {
     }
 
     @Bean
-    public AuroraRestTemplateCustomizer auroraRestTemplateCustomizer() {
-        return new AuroraRestTemplateCustomizer();
+    public AuroraRestTemplateCustomizer auroraRestTemplateCustomizer(@Value("${spring.application.name}") String appName) {
+        return new AuroraRestTemplateCustomizer(appName);
     }
 
     @Bean
