@@ -1,3 +1,10 @@
 spring:
     application:
         name: mvc-starter
+
+aurora:
+    mvc:
+        header:
+            resttemplate:
+                interceptor:
+                    enabled: true

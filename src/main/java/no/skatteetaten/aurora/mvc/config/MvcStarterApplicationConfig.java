@@ -1,21 +1,22 @@
-package no.skatteetaten.aurora.config;
+package no.skatteetaten.aurora.mvc.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
-import no.skatteetaten.aurora.AuroraRestTemplateCustomizer;
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter;
+import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer;
 
+@EnableConfigurationProperties(MvcStarterProperties.class)
 @Configuration
 public class MvcStarterApplicationConfig {
 
     @Bean
-    @ConditionalOnProperty(prefix = "aurora.starter.headerfilter", name = "enabled", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "aurora.mvc.header.filter", name = "enabled", matchIfMissing = true)
     public FilterRegistrationBean auroraHeaderFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.addUrlPatterns("/*");
@@ -25,13 +26,9 @@ public class MvcStarterApplicationConfig {
     }
 
     @Bean
-    public AuroraRestTemplateCustomizer auroraRestTemplateCustomizer(@Value("${spring.application.name}") String appName) {
-        return new AuroraRestTemplateCustomizer(appName);
-    }
-
-    @Bean
-    public RestTemplateBuilder auroraRestTemplateBuilder(AuroraRestTemplateCustomizer customizer) {
-        return new RestTemplateBuilder(customizer);
+    @ConditionalOnProperty(prefix = "aurora.mvc.header.resttemplate.interceptor", name = "enabled")
+    public AuroraHeaderRestTemplateCustomizer auroraRestTemplateCustomizer(@Value("${spring.application.name:}") String appName) {
+        return new AuroraHeaderRestTemplateCustomizer(appName);
     }
 
 }

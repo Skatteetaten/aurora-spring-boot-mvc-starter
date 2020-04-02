@@ -106,6 +106,12 @@
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${springboot.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>${springboot.version}</version>
+      <optional>true</optional>
+    </dependency>
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
@@ -162,7 +168,6 @@
     <testSourceDirectory>src/test/kotlin</testSourceDirectory>
 
     <plugins>
-
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>

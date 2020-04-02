@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora;
+package no.skatteetaten.aurora.mvc;
 
 import java.util.UUID;
 
@@ -9,14 +9,14 @@ import org.springframework.web.client.RestTemplate;
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter;
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon;
 
-public class AuroraRestTemplateCustomizer implements RestTemplateCustomizer {
+public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomizer {
 
     public static final String KLIENT_ID = "Klientid";
     public static final String MELDINGS_ID = "Meldingsid";
 
     private final String appName;
 
-    public AuroraRestTemplateCustomizer(String appName) {
+    public AuroraHeaderRestTemplateCustomizer(String appName) {
         this.appName = appName;
     }
 

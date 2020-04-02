@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  no.skatteetaten.aurora.config.MvcStarterApplicationConfig\
-  no.skatteetaten.aurora.TomcatCustomizer
+  no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig\
+  no.skatteetaten.aurora.mvc.TomcatCustomizer

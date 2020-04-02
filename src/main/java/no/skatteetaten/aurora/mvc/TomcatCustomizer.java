@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora;
+package no.skatteetaten.aurora.mvc;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
