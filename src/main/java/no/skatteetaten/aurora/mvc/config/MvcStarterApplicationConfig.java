@@ -27,7 +27,9 @@ public class MvcStarterApplicationConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "aurora.mvc.header.resttemplate.interceptor", name = "enabled")
-    public AuroraHeaderRestTemplateCustomizer auroraRestTemplateCustomizer(@Value("${spring.application.name:}") String appName) {
+    public AuroraHeaderRestTemplateCustomizer auroraRestTemplateCustomizer(
+        @Value("${spring.application.name:}") String appName
+    ) {
         return new AuroraHeaderRestTemplateCustomizer(appName);
     }
 
