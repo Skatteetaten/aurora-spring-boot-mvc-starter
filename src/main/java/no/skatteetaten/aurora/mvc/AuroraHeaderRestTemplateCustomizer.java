@@ -3,6 +3,7 @@ package no.skatteetaten.aurora.mvc;
 import java.util.UUID;
 
 import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,6 +43,7 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
     private void addClientId(HttpRequest request) {
         if(appName != null) {
             request.getHeaders().add(KLIENT_ID, appName);
+            request.getHeaders().add(HttpHeaders.USER_AGENT, appName);
         }
     }
 

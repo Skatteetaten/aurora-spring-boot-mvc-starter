@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpHeaders
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 
@@ -64,6 +65,10 @@ class MvcStarterApplicationConfigTest {
         assertThat(headers[MELDINGS_ID])
             .isNotNull()
             .isNotEmpty()
+
+        assertThat(headers[HttpHeaders.USER_AGENT])
+            .isNotNull()
+            .isEqualTo("mvc-starter")
     }
 
     @Test
