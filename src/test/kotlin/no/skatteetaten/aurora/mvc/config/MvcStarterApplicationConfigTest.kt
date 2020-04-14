@@ -10,6 +10,7 @@ import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.KLIENT_ID
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.MELDINGS_ID
+import no.skatteetaten.aurora.mvc.AuroraSpanCustomizer
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,8 +36,11 @@ open class TestConfig {
 @SpringBootTest(classes = [TestConfig::class, MvcStarterApplicationConfig::class])
 class MvcStarterApplicationConfigTest {
 
-    @Autowired
+    @Autowired(required = false)
     private lateinit var auroraHeaderFilter: FilterRegistrationBean<*>
+
+    @Autowired(required = false)
+    private lateinit var auroraSpanCustomizer: AuroraSpanCustomizer
 
     @Autowired
     private lateinit var restTemplate: RestTemplate
@@ -44,6 +48,11 @@ class MvcStarterApplicationConfigTest {
     @Test
     fun `Initialize MDC filter`() {
         assertThat(auroraHeaderFilter).isNotNull()
+    }
+
+    @Test
+    fun `Initialize span customizer`() {
+        assertThat(auroraSpanCustomizer).isNotNull()
     }
 
     @Test
