@@ -8,6 +8,7 @@ import brave.handler.MutableSpan
 import brave.propagation.TraceContext
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon
 import no.skatteetaten.aurora.mvc.AuroraSpanCustomizer.*
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class AuroraSpanCustomizerTest {
@@ -22,6 +23,11 @@ class AuroraSpanCustomizerTest {
             }
         })
         .build().tracer()
+
+    @AfterEach
+    fun tearDown() {
+        spans.clear()
+    }
 
     @Test
     fun `Set Korrelasjonsid tag as part of the span`() {
