@@ -2,6 +2,7 @@ package no.skatteetaten.aurora.mvc
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import brave.Tracing
 import brave.handler.FinishedSpanHandler
 import brave.handler.MutableSpan
@@ -26,6 +27,7 @@ class AuroraSpanCustomizerTest {
 
     @AfterEach
     fun tearDown() {
+        RequestKorrelasjon.setId(null)
         spans.clear()
     }
 
@@ -39,5 +41,15 @@ class AuroraSpanCustomizerTest {
         }
 
         assertThat(spans.first().tag(TAG_KORRELASJONS_ID)).isEqualTo("123")
+    }
+
+    @Test
+    fun `Do not include Korrelasjonsid tag if it is not already set`() {
+        tracer.nextSpan().apply {
+            start()
+            finish()
+        }
+
+        assertThat(spans.first().tag(TAG_KORRELASJONS_ID)).isNull()
     }
 }
