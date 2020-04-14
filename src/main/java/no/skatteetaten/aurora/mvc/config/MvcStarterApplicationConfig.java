@@ -10,6 +10,7 @@ import org.springframework.core.Ordered;
 
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter;
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer;
+import no.skatteetaten.aurora.mvc.AuroraSpanCustomizer;
 
 @EnableConfigurationProperties(MvcStarterProperties.class)
 @Configuration
@@ -31,6 +32,12 @@ public class MvcStarterApplicationConfig {
         @Value("${spring.application.name:}") String appName
     ) {
         return new AuroraHeaderRestTemplateCustomizer(appName);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "aurora.mvc.header.span.interceptor", name = "enabled")
+    public AuroraSpanCustomizer auroraSpanCustomizer() {
+        return new AuroraSpanCustomizer();
     }
 
 }

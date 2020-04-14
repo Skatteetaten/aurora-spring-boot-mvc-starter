@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class MvcStarterProperties {
     private AuroraPropsFilter filter;
     private AuroraPropsResttemplate resttemplate;
+    private AuroraPropsSpan span;
 
     public AuroraPropsFilter getFilter() {
         return filter;
@@ -23,6 +24,14 @@ public class MvcStarterProperties {
         this.resttemplate = resttemplate;
     }
 
+    public AuroraPropsSpan getSpan() {
+        return span;
+    }
+
+    public void setSpan(AuroraPropsSpan span) {
+        this.span = span;
+    }
+
     public static class AuroraPropsFilter {
         private boolean enabled;
 
@@ -36,18 +45,43 @@ public class MvcStarterProperties {
     }
 
     public static class AuroraPropsResttemplate {
-        private AuroraPropsInterceptor interceptor;
+        private AuroraPropsResttemplateInterceptor interceptor;
 
-        public AuroraPropsInterceptor getInterceptor() {
+        public AuroraPropsResttemplateInterceptor getInterceptor() {
             return interceptor;
         }
 
         public void setInterceptor(
-            AuroraPropsInterceptor interceptor) {
+            AuroraPropsResttemplateInterceptor interceptor) {
             this.interceptor = interceptor;
         }
 
-        public static class AuroraPropsInterceptor {
+        public static class AuroraPropsResttemplateInterceptor {
+            private boolean enabled;
+
+            public boolean isEnabled() {
+                return enabled;
+            }
+
+            public void setEnabled(boolean enabled) {
+                this.enabled = enabled;
+            }
+        }
+    }
+
+    public static class AuroraPropsSpan {
+        private AuroraPropsSpanInterceptor interceptor;
+
+        public AuroraPropsSpanInterceptor getInterceptor() {
+            return interceptor;
+        }
+
+        public void setInterceptor(
+            AuroraPropsSpanInterceptor interceptor) {
+            this.interceptor = interceptor;
+        }
+
+        public static class AuroraPropsSpanInterceptor {
             private boolean enabled;
 
             public boolean isEnabled() {
