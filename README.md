@@ -1,1 +1,159 @@
 # Aurora Spring Boot MVC Starter
+
+A starter for including common configuration in Spring Boot for running an application on Aurora OpenShift. The starter
+is part of the Aurora Reference Architecture and an example can be found at in the repository for
+[the reference application](https://github.com/Skatteetaten/openshift-reference-springboot-server).
+
+The MVC starter has a dependency on the [base-starter](https://github.com/Skatteetaten/aurora-spring-boot-base-starter).
+
+== How to use
+Include the starter as a dependency
+
+```xml
+<dependency>
+  <groupId>no.skatteetaten.aurora.springboot</groupId>
+  <artifactId>aurora-spring-boot-mvc-starter</artifactId>
+  <version>${aurora.starters.version}</version>
+</dependency>
+```
+
+In order to deploy this application on the https://skatteetaten.github.io/aurora[AuroraPlattform] using https://skatteetaten.github.io/aurora/documentation/aurora-config/[AuroraConfig] the following must be specified in the base file:
+[source,yaml]
+----
+actuator:
+  path: /actuator/prometheus
+----
+
+The standard value is /prometheus that works for spring boot 1 based applications but not boot2 based applications.
+
+
+== Features
+
+=== Register the Aurora Header MDC Filter
+
+The starter will register the Aurora Header MDC Filter. The registration can be disabled with the property
+
+  aurora.starter.headerfilter.enabled = false
+
+
+=== Create property sources for Aurora config files
+
+During startup a PropertySource for the configuration in the Aurora Secret properties file (auroraConfig[secret]) and
+the Aurora Env properties file (auroraConfig[env]) will be created. These properties files are automatically mounted
+when deploying on OpenShift based on your AuroraConfig. It will also create a property source from the environment
+variables set by by the platform during deploy.
+
+
+=== Graceful Shutdown Handler for Tomcat
+
+The starter will add a graceful shutdown handler for Tomcat (without it Tomcat may terminate ongoing requests on SIGTERM)
+
+
+=== The Aurora Management Interface
+
+The starter will help you implement the requirements for the Aurora Management Interface by setting some common
+configuration values.
+
+Note that the `management.port` will be set to the value of the `MANAGEMENT_HTTP_PORT` environment variable provided
+by the platform. The default is to put all actuator endpoints on a different port than the main application/api
+endpoints.
+
+[source]
+----
+info.serviceLinks.metrics={metricsHostname}/dashboard/db/openshift-project-spring-actuator-view?var-ds=openshift-{cluster}-ose&var-namespace={namespace}&var-app={name}
+
+info.podLinks.metrics={metricsHostname}/dashboard/db/openshift-project-spring-actuator-view-instance?var-ds=openshift-{cluster}-ose&var-namespace={namespace}&var-app={name}&var-instance={podName}
+
+management.health.status.order=DOWN, OUT_OF_SERVICE, UNKNOWN, OBSERVE, UP
+management.port=${MANAGEMENT_HTTP_PORT:8081}
+----
+
+=== Metrics
+
+The starter will automatically add http://micrometer.io[Micrometer] (the upcoming spring boot default) as the default
+metrics registry and also add `micrometer-registry-prometheus` for providing the `/prometheus` actuator endpoint that
+will be (optionally) read by Prometheus automatically for all applications deployed on Aurora OpenShift.
+
+Additionally a number of Micrometer metrics collectors will be automatically registered;
+
+* JvmThreadMetrics
+* ProcessorMetrics
+* JvmGcMetrics
+* JvmMemoryMetrics
+* LogbackMetrics
+* UptimeMetrics
+* FileDescriptorMetrics
+* DataSourceMetrics
+* RestTemplateMetrics
+* TomcatMetrics
+
+To get an overview of how Micrometer works we encourage you to read the Micrometer docs:
+https://micrometer.io/docs. Relevant sections are http://micrometer.io/docs/concepts, http://micrometer.io/docs/registry/prometheus and http://micrometer.io/docs/ref/spring/1.5
+
+Outgoing and incomming HTTP metrics have by default percentiles turned on and has buckets between 100ms and 5s.
+[source]
+----
+management.metrics.distribution.percentiles-histogram.http=true
+----
+
+There are default min/max buckets set to 100ms to 5secounds for http and operations metrics
+
+If you would like to change these use the following bean in your code
+
+[source]
+----
+ @Bean
+    MeterFilter minExpectedHttp() {
+        return MeterFilter.minExpected("http", Duration.ofMillis(200));
+    }
+----
+
+=== Auto registration of DataSource
+
+If a database is provided on OpenShift there will automatically be a DataSource created from the properties files provided
+by the platform. If you want to override to use a specific database you can set the `aurora.db` property if you have more
+than one db in your application.
+
+Connection count metrics will also be collected from the DataSource.
+
+=== Configuration of the Actuator Endpoints
+
+Most actuator endpoints will be disabled by default;
+
+* auditevents
+* heapdump
+* metrics
+* logfile
+* autoconfig
+* configprops
+* mappings
+* beans
+* dump
+* jolokia
+
+Actuator will also be configured to use the port specified by the `MANAGEMENT_HTTP_PORT` environment variable. The
+value of this variable will be set by the Aurora platform when deploying. Security on the actuator endpoints and the
+metrics filter will be disabled.
+
+
+=== Setting of Spring Boot Properties
+
+The spring boot application name will be set from the environment variables APP_NAME and POD_NAMESPACE provided by the
+platform when deploying to Aurora OpenShift.
+
+The `flyway.out-of-order` mode will also be activated to allow migrations to be developed in different feature branches
+at the same time. See the Flyway documentation for more information.
+
+The AURORA_VERSION and IMAGE_BUILD_TIME variables are included in spring boots actuator output since we use them in a central
+management overview dashboard.
+
+[source]
+----
+spring.application.name=${APP_NAME:my}-${POD_NAMESPACE:app}
+spring.jackson.date-format=com.fasterxml.jackson.databind.util.ISO8601DateFormat
+flyway.out-of-order=true
+info.auroraVersion= ${AURORA_VERSION:local-dev}
+info.imageBuildTime=${IMAGE_BUILD_TIME:}
+----
+
+
