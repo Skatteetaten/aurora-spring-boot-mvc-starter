@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora;
+package no.skatteetaten.aurora.mvc;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
