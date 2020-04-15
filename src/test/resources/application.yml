@@ -8,6 +8,3 @@ aurora:
             resttemplate:
                 interceptor:
                     enabled: true
-            span:
-                interceptor:
-                    enabled: true

@@ -35,7 +35,7 @@ public class MvcStarterApplicationConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "aurora.mvc.header.span.interceptor", name = "enabled")
+    @ConditionalOnProperty(prefix = "aurora.mvc.header.span.interceptor", name = "enabled", matchIfMissing = true)
     public AuroraSpanCustomizer auroraSpanCustomizer() {
         return new AuroraSpanCustomizer();
     }
