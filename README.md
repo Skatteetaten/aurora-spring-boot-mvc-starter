@@ -24,6 +24,7 @@ aurora.mvc.header.filter.enabled = false
 ```
 
 ### RestTemplate interceptor
+
 The RestTemplate interceptor will add the `Korrelasjonsid`, `Meldingsid` and `Klientid` headers to requests sent from the RestTemplate instance.
 To use this functionality enabled it using the property, as shown below. It is disabled by default.
 Inject it as a normal Spring bean using the `RestTemplateBuilder`, where you can also add you own customization.
@@ -33,9 +34,21 @@ aurora.mvc.header.resttemplate.interceptor.enabled = true
 ```
 
 The headers set are based on these values:
-- `Korrelasjonsid`, taken from the `RequestKorrelasjon` class. If not found, it will generate a new ID.
-- `Medlindsid`, will always generate a new ID.
-- `Klientid`, set from the application name (using the `spring.application.name` property). The `User-Agent` header will also be set to the same value.
+- `Korrelasjonsid` taken from the `RequestKorrelasjon` class. If not found, it will generate a new ID.
+- `Medlindsid` will always generate a new ID.
+- `Klientid` set from the application name (using the `spring.application.name` property). The `User-Agent` header will also be set to the same value.
+
+### Spring Sleuth span customizer
+
+[Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth) is included by the base starter.
+It is a distributed tracing solution for Spring Boot apps. Spring Sleuth will generate its own IDs, however it can be useful to see how these IDs related to the `Korrelasjonsid` header.
+
+By enabling the `AuroraSpanCustomizer` the `Korrelasjonsid` set will be included in the information sent to Zipkin as a tag.
+If `Korrelasjonsid` is not set, this tag will simply be skipped.
+
+```properties
+aurora.mvc.header.span.interceptor.enbled = true
+```
 
 ### Graceful Shutdown Handler for Tomcat
 
