@@ -54,4 +54,10 @@ aurora.mvc.header.span.interceptor.enbled = true
 
 The starter will add a graceful shutdown handler for Tomcat (without it Tomcat may terminate ongoing requests on SIGTERM)
 
+### Metrics
+
+Micrometer metrics collectors registered (provided by the base starter):
+* RestTemplateMetrics
+* TomcatMetrics
+
 
