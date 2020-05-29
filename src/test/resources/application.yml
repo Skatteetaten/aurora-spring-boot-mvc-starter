@@ -1,6 +1,8 @@
 spring:
     application:
         name: mvc-starter
+    zipkin:
+        enabled: false
 
 aurora:
     mvc:
