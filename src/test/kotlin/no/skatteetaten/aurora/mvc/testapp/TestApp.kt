@@ -41,8 +41,8 @@ open class TestController(private val restTemplate: RestTemplate) {
 
         val requestHeaders = restTemplate.getForEntity<Map<String, String>>("http://localhost:8080/headers")
         return mapOf(
-            "Korrelasjonsid fra filter" to korrelasjonsid,
-            "Request headers sendt fra RestTemplate" to requestHeaders.headers
+            "Korrelasjonsid fra Filter bean" to korrelasjonsid,
+            "Request headers fra RestTemplate" to requestHeaders.headers
         )
     }
 
