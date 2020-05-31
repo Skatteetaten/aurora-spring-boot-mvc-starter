@@ -1,8 +1,6 @@
 spring:
     application:
         name: mvc-starter
-    zipkin:
-        enabled: false
 
 aurora:
     mvc:
@@ -10,3 +8,7 @@ aurora:
             resttemplate:
                 interceptor:
                     enabled: true
+
+management:
+    server:
+        port: -1

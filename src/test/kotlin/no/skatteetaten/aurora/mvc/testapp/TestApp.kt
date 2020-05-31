@@ -1,10 +1,9 @@
 package no.skatteetaten.aurora.mvc.testapp
 
-import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter
-import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.*
+import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon
-import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer
-import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.*
+import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.KLIENT_ID
+import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.MELDINGS_ID
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 
+// Default profile will connect to zipkin (run docker-compose to start local zipkin)
+// Start with no-zipkin profile to disable zipkin integration
 @SpringBootApplication
 open class TestMain
 

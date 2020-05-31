@@ -10,7 +10,7 @@ import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.KLIENT_ID
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.MELDINGS_ID
-import no.skatteetaten.aurora.mvc.AuroraSpanCustomizer
+import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +40,7 @@ class MvcStarterApplicationConfigTest {
     private lateinit var auroraHeaderFilter: FilterRegistrationBean<*>
 
     @Autowired(required = false)
-    private lateinit var auroraSpanCustomizer: AuroraSpanCustomizer
+    private lateinit var auroraRequestParser: AuroraRequestParser
 
     @Autowired
     private lateinit var restTemplate: RestTemplate
@@ -51,8 +51,8 @@ class MvcStarterApplicationConfigTest {
     }
 
     @Test
-    fun `Initialize span customizer`() {
-        assertThat(auroraSpanCustomizer).isNotNull()
+    fun `Initialize request parser`() {
+        assertThat(auroraRequestParser).isNotNull()
     }
 
     @Test
