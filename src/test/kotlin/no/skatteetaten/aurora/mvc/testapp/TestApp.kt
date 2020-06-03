@@ -43,16 +43,16 @@ open class TestController(private val restTemplate: RestTemplate) {
         val requestHeaders = restTemplate.getForEntity<Map<String, String>>("http://localhost:8080/headers")
         return mapOf(
             "Korrelasjonsid fra Filter bean" to korrelasjonsid,
-            "Request headers fra RestTemplate" to requestHeaders.headers
+            "Request headers fra RestTemplate" to requestHeaders.body
         )
     }
 
     @GetMapping("/headers")
-    fun getHeaders(@RequestHeader headers: HttpHeaders): HttpHeaders {
+    fun getHeaders(@RequestHeader headers: HttpHeaders): Map<String, String> {
         checkNotNull(headers[KORRELASJONS_ID])
         checkNotNull(headers[MELDINGS_ID])
         checkNotNull(headers[KLIENT_ID])
         checkNotNull(headers[USER_AGENT])
-        return headers
+        return headers.toSingleValueMap()
     }
 }
