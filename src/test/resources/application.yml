@@ -8,3 +8,7 @@ aurora:
             resttemplate:
                 interceptor:
                     enabled: true
+
+management:
+    server:
+        port: -1

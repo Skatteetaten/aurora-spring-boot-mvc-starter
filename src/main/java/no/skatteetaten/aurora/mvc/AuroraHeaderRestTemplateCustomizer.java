@@ -33,15 +33,15 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
 
     private void addCorrelationId(HttpRequest request) {
         String id = RequestKorrelasjon.getId();
-        if(id == null || id.isEmpty()) {
+        if (id == null || id.isEmpty()) {
             id = UUID.randomUUID().toString();
             RequestKorrelasjon.setId(id);
         }
-        request.getHeaders().add(AuroraHeaderFilter.KORRELASJONS_ID, id);
+        request.getHeaders().addIfAbsent(AuroraHeaderFilter.KORRELASJONS_ID, id);
     }
 
     private void addClientId(HttpRequest request) {
-        if(appName != null) {
+        if (appName != null) {
             request.getHeaders().add(KLIENT_ID, appName);
             request.getHeaders().add(HttpHeaders.USER_AGENT, appName);
         }
