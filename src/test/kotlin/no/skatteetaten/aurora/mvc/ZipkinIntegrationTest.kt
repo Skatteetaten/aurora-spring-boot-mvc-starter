@@ -8,13 +8,13 @@ import brave.sampler.Sampler
 import com.fasterxml.jackson.databind.JsonNode
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.TAG_KORRELASJONS_ID
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
-import no.skatteetaten.aurora.mvc.testutils.DisableIfJenkins
 import org.awaitility.Awaitility.await
 import org.awaitility.kotlin.has
 import org.awaitility.kotlin.untilCallTo
 import org.awaitility.kotlin.withPollDelay
 import org.awaitility.kotlin.withPollInterval
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -46,7 +46,7 @@ open class TestConfig {
     open fun restTemplate(builder: RestTemplateBuilder) = builder.build()
 }
 
-@DisableIfJenkins
+@DisabledIfEnvironmentVariable(named = "ci", matches = "true")
 @Testcontainers
 @SpringBootTest(
     classes = [TestConfig::class, RequestTestMain::class, MvcStarterApplicationConfig::class],
