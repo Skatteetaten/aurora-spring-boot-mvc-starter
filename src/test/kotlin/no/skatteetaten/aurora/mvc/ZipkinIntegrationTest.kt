@@ -1,9 +1,17 @@
 package no.skatteetaten.aurora.mvc
 
+import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.support.expected
 import brave.sampler.Sampler
 import com.fasterxml.jackson.databind.JsonNode
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.TAG_KORRELASJONS_ID
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
+import no.skatteetaten.aurora.mvc.testutils.DisableIfJenkins
+import org.awaitility.Awaitility.await
+import org.awaitility.kotlin.has
+import org.awaitility.kotlin.untilCallTo
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,11 +19,14 @@ import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpStatus.OK
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -32,6 +43,7 @@ open class TestConfig {
     open fun restTemplate(builder: RestTemplateBuilder) = builder.build()
 }
 
+@DisableIfJenkins
 @Testcontainers
 @SpringBootTest(
     classes = [TestConfig::class, RequestTestMain::class, MvcStarterApplicationConfig::class],
@@ -48,14 +60,15 @@ class ZipkinIntegrationTest {
 
     companion object {
         @Container
-        val zipkin = KGenericContainer("openzipkin/zipkin-slim:2")
+        val zipkin: KGenericContainer = KGenericContainer("openzipkin/zipkin-slim:2")
             .withExposedPorts(9411)
+            .waitingFor(Wait.forHttp("/zipkin"))
 
         @JvmStatic
         @DynamicPropertySource
         fun zipkinProperties(registry: DynamicPropertyRegistry) {
             zipkin.start()
-            registry.add("spring.zipkin.baseUrl") {
+            registry.add("spring.zipkin.base-url") {
                 "http://${zipkin.host}:${zipkin.firstMappedPort}"
             }
         }
@@ -63,9 +76,22 @@ class ZipkinIntegrationTest {
 
     @Test
     fun `Request registers tracing data in zipkin`() {
-        val response = restTemplate.getForEntity<Map<String, String>>("http://localhost:$port/test")
-        val zipkinResponse =
+        val traceRequest = restTemplate.getForEntity<Map<String, String>>("http://localhost:$port/test")
+
+        val spans = await().untilCallTo {
             restTemplate.getForEntity<JsonNode>("http://localhost:${zipkin.firstMappedPort}/api/v2/spans?serviceName=mvc-starter")
-        println(zipkinResponse)
+        } has { body!!.size() > 0 }
+
+        val traces = restTemplate.getForEntity<JsonNode>("http://localhost:${zipkin.firstMappedPort}/api/v2/traces")
+
+        assertThat(traceRequest.statusCode).isEqualTo(OK)
+        assertThat(spans.statusCode).isEqualTo(OK)
+        assertThat(traces.statusCode).isEqualTo(OK)
+        assertThat(traces).containsKorrelasjonsidTag()
+    }
+
+    private fun Assert<ResponseEntity<JsonNode>>.containsKorrelasjonsidTag() = given { actual ->
+        if (actual.body!!.findValues("tags").any { it.has(TAG_KORRELASJONS_ID) }) return
+        expected("response to contain tag $TAG_KORRELASJONS_ID")
     }
 }
