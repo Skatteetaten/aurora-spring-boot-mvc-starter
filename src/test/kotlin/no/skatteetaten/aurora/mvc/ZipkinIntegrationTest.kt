@@ -12,6 +12,8 @@ import no.skatteetaten.aurora.mvc.testutils.DisableIfJenkins
 import org.awaitility.Awaitility.await
 import org.awaitility.kotlin.has
 import org.awaitility.kotlin.untilCallTo
+import org.awaitility.kotlin.withPollDelay
+import org.awaitility.kotlin.withPollInterval
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -29,6 +31,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.time.Duration
 
 class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
 
@@ -78,9 +81,12 @@ class ZipkinIntegrationTest {
     fun `Request registers tracing data in zipkin`() {
         val traceRequest = restTemplate.getForEntity<Map<String, String>>("http://localhost:$port/test")
 
-        val spans = await().untilCallTo {
-            restTemplate.getForEntity<JsonNode>("http://localhost:${zipkin.firstMappedPort}/api/v2/spans?serviceName=mvc-starter")
-        } has { body!!.size() > 0 }
+        val spans = await()
+            .withPollDelay(Duration.ofSeconds(1)) // Wait initial
+            .withPollInterval(Duration.ofMillis(100)) // Wait before retrying
+            .untilCallTo {
+                restTemplate.getForEntity<JsonNode>("http://localhost:${zipkin.firstMappedPort}/api/v2/spans?serviceName=mvc-starter")
+            } has { body!!.size() > 0 }
 
         val traces = restTemplate.getForEntity<JsonNode>("http://localhost:${zipkin.firstMappedPort}/api/v2/traces")
 
