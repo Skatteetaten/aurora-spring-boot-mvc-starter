@@ -46,7 +46,7 @@ open class TestConfig {
     open fun restTemplate(builder: RestTemplateBuilder) = builder.build()
 }
 
-@DisabledIfEnvironmentVariable(named = "ci", matches = "true")
+@DisabledIfEnvironmentVariable(named = "CI", matches = "true")
 @Testcontainers
 @SpringBootTest(
     classes = [TestConfig::class, RequestTestMain::class, MvcStarterApplicationConfig::class],
