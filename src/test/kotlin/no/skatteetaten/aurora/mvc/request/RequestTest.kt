@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora.mvc
+package no.skatteetaten.aurora.mvc.request
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

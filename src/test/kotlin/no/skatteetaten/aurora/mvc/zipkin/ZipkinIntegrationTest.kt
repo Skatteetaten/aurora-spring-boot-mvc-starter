@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora.mvc
+package no.skatteetaten.aurora.mvc.zipkin
 
 import assertk.Assert
 import assertk.assertThat
@@ -8,6 +8,7 @@ import brave.sampler.Sampler
 import com.fasterxml.jackson.databind.JsonNode
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.TAG_KORRELASJONS_ID
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
+import no.skatteetaten.aurora.mvc.request.RequestTestMain
 import org.awaitility.Awaitility.await
 import org.awaitility.kotlin.has
 import org.awaitility.kotlin.untilCallTo
@@ -63,7 +64,9 @@ class ZipkinIntegrationTest {
 
     companion object {
         @Container
-        val zipkin: KGenericContainer = KGenericContainer("openzipkin/zipkin-slim:2")
+        val zipkin: KGenericContainer = KGenericContainer(
+            "openzipkin/zipkin-slim:2"
+        )
             .withExposedPorts(9411)
             .waitingFor(Wait.forHttp("/zipkin"))
 

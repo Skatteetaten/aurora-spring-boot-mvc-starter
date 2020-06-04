@@ -9,6 +9,9 @@ aurora:
                 interceptor:
                     enabled: true
 
+server:
+    shutdown: immediate
+
 management:
     server:
         port: -1
