@@ -45,6 +45,7 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
+            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=true",
             "aurora.mvc.header.span.interceptor.enabled=true"
         ],
@@ -68,6 +69,7 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
+            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=true",
             "aurora.mvc.header.span.interceptor.enabled=false"
         ],
@@ -97,6 +99,7 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
+            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=false",
             "aurora.mvc.header.span.interceptor.enabled=true"
         ],
