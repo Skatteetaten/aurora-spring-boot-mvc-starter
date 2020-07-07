@@ -5,7 +5,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import brave.propagation.ExtraFieldPropagation
+import brave.baggage.BaggageField
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
 import org.junit.jupiter.api.Nested
@@ -32,7 +32,7 @@ open class RequestTestController {
     @GetMapping("/test")
     fun getText() = mapOf(
         "mdc" to MDC.get(KORRELASJONS_ID),
-        "span" to ExtraFieldPropagation.get(KORRELASJONS_ID)
+        "span" to BaggageField.getByName(KORRELASJONS_ID).value
     ).also {
         LoggerFactory.getLogger(RequestTestController::class.java).info("Clearing MDC, content: $it")
         MDC.clear()
@@ -46,21 +46,25 @@ class RequestTest {
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
             "spring.zipkin.enabled=true",
-            "aurora.mvc.header.filter.enabled=true",
-            "aurora.mvc.header.span.interceptor.enabled=true"
+            "aurora.mvc.header.filter.enabled=true"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    inner class FilterAndSpan {
+    inner class FilterEnabled {
         @LocalServerPort
         private var port: Int = 0
 
         @Test
-        fun `MDC and ExtraFields contains Korrelasjonsid`() {
+        fun `MDC and BaggageField contains Korrelasjonsid`() {
             val response = sendRequest(port)
 
             assertThat(response["mdc"]).isNotNull().isNotEmpty()
             assertThat(response["span"]).isNotNull().isNotEmpty()
+        }
+
+        @Test
+        fun `MDC and BaggageField is equal`() {
+            val response = sendRequest(port)
             assertThat(response["mdc"]).isEqualTo(response["span"])
         }
     }
@@ -70,28 +74,20 @@ class RequestTest {
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
             "spring.zipkin.enabled=true",
-            "aurora.mvc.header.filter.enabled=true",
-            "aurora.mvc.header.span.interceptor.enabled=false"
+            "aurora.mvc.header.filter.enabled=false"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    inner class FilterOnly {
+    inner class FilterDisabled {
         @LocalServerPort
         private var port: Int = 0
 
         @Test
-        fun `MDC contains Korrelasjonsid`() {
+        fun `MDC and Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
-            assertThat(response["mdc"]).isNotNull().isNotEmpty()
+            assertThat(response["mdc"]).isNull()
             assertThat(response["span"]).isNull()
-        }
-
-        @Test
-        fun `MDC contains same Korrelasjonsid as incoming request`() {
-            val response = sendRequest(port, mapOf(KORRELASJONS_ID to "abc123"))
-
-            assertThat(response["mdc"]).isEqualTo("abc123")
         }
     }
 
@@ -99,22 +95,43 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
-            "spring.zipkin.enabled=true",
-            "aurora.mvc.header.filter.enabled=false",
-            "aurora.mvc.header.span.interceptor.enabled=true"
+            "spring.zipkin.enabled=false",
+            "aurora.mvc.header.filter.enabled=true"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
     )
-    inner class SpanOnly {
+    inner class ZipkinDisabled {
         @LocalServerPort
         private var port: Int = 0
 
         @Test
-        fun `Span contains Korrelasjonsid`() {
+        fun `Korrelasjonsid is set`() {
+            val response = sendRequest(port)
+
+            assertThat(response["mdc"]).isNotNull().isNotEmpty()
+            assertThat(response["span"]).isNotNull().isNotEmpty()
+        }
+    }
+
+    @Nested
+    @SpringBootTest(
+        classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
+        properties = [
+            "spring.zipkin.enabled=false",
+            "aurora.mvc.header.filter.enabled=false"
+        ],
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+    )
+    inner class ZipkinAndFilterDisabled {
+        @LocalServerPort
+        private var port: Int = 0
+
+        @Test
+        fun `Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
             assertThat(response["mdc"]).isNull()
-            assertThat(response["span"]).isNotNull().isNotEmpty()
+            assertThat(response["span"]).isNull()
         }
     }
 

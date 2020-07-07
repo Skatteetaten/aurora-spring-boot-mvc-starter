@@ -5,9 +5,9 @@ import static no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJ
 import java.util.UUID;
 
 import brave.SpanCustomizer;
+import brave.baggage.BaggageField;
 import brave.http.HttpRequest;
 import brave.http.HttpRequestParser;
-import brave.propagation.ExtraFieldPropagation;
 import brave.propagation.TraceContext;
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon;
 
@@ -23,7 +23,7 @@ public class AuroraRequestParser implements HttpRequestParser {
             korrelasjonsid = UUID.randomUUID().toString();
         }
 
-        ExtraFieldPropagation.set(context, KORRELASJONS_ID, korrelasjonsid);
+        BaggageField.create(KORRELASJONS_ID).updateValue(context, korrelasjonsid);
         span.tag(TAG_KORRELASJONS_ID, korrelasjonsid);
     }
 }
