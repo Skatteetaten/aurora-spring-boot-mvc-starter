@@ -20,6 +20,7 @@ public class MvcStarterApplicationConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "aurora.mvc.header.filter", name = "enabled", matchIfMissing = true)
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FilterRegistrationBean auroraHeaderFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.addUrlPatterns("/*");
