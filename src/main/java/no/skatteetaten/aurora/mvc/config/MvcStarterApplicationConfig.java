@@ -20,6 +20,7 @@ public class MvcStarterApplicationConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "aurora.mvc.header.filter", name = "enabled", matchIfMissing = true)
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public FilterRegistrationBean auroraHeaderFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.addUrlPatterns("/*");
@@ -37,7 +38,7 @@ public class MvcStarterApplicationConfig {
     }
 
     @Bean(HttpServerRequestParser.NAME)
-    @ConditionalOnProperty(prefix = "aurora.mvc.header.span.interceptor", name = "enabled", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "aurora.mvc.header.filter", name = "enabled", matchIfMissing = true)
     public HttpRequestParser sleuthHttpServerRequestParser() {
         return new AuroraRequestParser();
     }

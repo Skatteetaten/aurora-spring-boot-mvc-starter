@@ -23,6 +23,19 @@ The starter will register the Aurora Header MDC Filter. The registration can be 
 aurora.mvc.header.filter.enabled = false
 ```
 
+[Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth) is included by the base starter.
+It is a distributed tracing solution for Spring Boot apps. Spring Sleuth will generate its own IDs, however it can be useful to see how these IDs related to the `Korrelasjonsid` header.
+
+By enabling the filter `Korrelasjonsid` set will be included in the information sent to Zipkin as a tag.
+If `Korrelasjonsid` is not set, this tag will simply be skipped.
+
+Spring Sleuth is by default disabled for local development and enabled in OpenShift.
+You can override this by setting the following property:
+
+```properties
+spring.sleuth.enabled = false
+```
+
 ### RestTemplate interceptor
 
 The RestTemplate interceptor will add the `Korrelasjonsid`, `Meldingsid` and `Klientid` headers to requests sent from the RestTemplate instance.
@@ -38,17 +51,6 @@ The headers set are based on these values:
 - `Medlindsid` will always generate a new ID.
 - `Klientid` set from the application name (using the `spring.application.name` property). The `User-Agent` header will also be set to the same value.
 
-### Spring Sleuth span customizer
-
-[Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth) is included by the base starter.
-It is a distributed tracing solution for Spring Boot apps. Spring Sleuth will generate its own IDs, however it can be useful to see how these IDs related to the `Korrelasjonsid` header.
-
-By enabling the `AuroraSpanCustomizer` the `Korrelasjonsid` set will be included in the information sent to Zipkin as a tag.
-If `Korrelasjonsid` is not set, this tag will simply be skipped.
-
-```properties
-aurora.mvc.header.span.interceptor.enbled = true
-```
 
 ### Graceful Shutdown Handler for Tomcat
 
