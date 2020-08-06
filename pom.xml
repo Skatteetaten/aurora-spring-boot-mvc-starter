@@ -59,8 +59,8 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <basestarter.version>1.0.14</basestarter.version>
-    <springboot.version>2.3.1.RELEASE</springboot.version>
+    <basestarter.version>[1.0.15,)</basestarter.version>
+    <springboot.version>2.3.2.RELEASE</springboot.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
 
     <kotlin.version>1.3.72</kotlin.version>
@@ -69,7 +69,7 @@
     <junit.version>5.6.0</junit.version>
     <assertk.version>0.22</assertk.version>
     <mockmvcext.version>1.1.0</mockmvcext.version>
-    <okhttp.version>4.7.2</okhttp.version>
+    <mockwebserver.version>4.8.0</mockwebserver.version>
     <testcontainers.version>1.14.3</testcontainers.version>
     <awaitility.version>4.0.3</awaitility.version>
   </properties>
@@ -136,13 +136,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>mockwebserver</artifactId>
-      <version>${okhttp.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>${okhttp.version}</version>
+      <version>${mockwebserver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
