@@ -1,6 +1,9 @@
 spring:
     application:
         name: mvc-starter
+    sleuth:
+        sampler:
+            probability: 1.0
 
 aurora:
     mvc:

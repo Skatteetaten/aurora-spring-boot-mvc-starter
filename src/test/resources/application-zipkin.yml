@@ -1,3 +1,4 @@
 spring:
-    zipkin:
-        enabled: true
+    sleuth:
+        sampler:
+            probability: 1.0
