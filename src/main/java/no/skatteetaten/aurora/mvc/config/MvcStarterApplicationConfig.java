@@ -13,6 +13,7 @@ import brave.http.HttpRequestParser;
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter;
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer;
 import no.skatteetaten.aurora.mvc.AuroraRequestParser;
+import no.skatteetaten.aurora.mvc.AuroraSpanHandler;
 
 @EnableConfigurationProperties(MvcStarterProperties.class)
 @Configuration
@@ -41,6 +42,12 @@ public class MvcStarterApplicationConfig {
     @ConditionalOnProperty(prefix = "aurora.mvc.header.filter", name = "enabled", matchIfMissing = true)
     public HttpRequestParser sleuthHttpServerRequestParser() {
         return new AuroraRequestParser();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "spring.zipkin", name = "enabled", havingValue = "false", matchIfMissing = true)
+    public AuroraSpanHandler auroraSpanHandler() {
+        return new AuroraSpanHandler();
     }
 
 }
