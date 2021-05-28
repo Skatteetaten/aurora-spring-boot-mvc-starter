@@ -61,7 +61,7 @@
 
     <basestarter.version>1.2.2</basestarter.version>
     <springboot.version>2.5.0</springboot.version>
-    <springcloud.release.train.version>2020.0.0</springcloud.release.train.version>
+    <springcloud.release.train.version>2020.0.2</springcloud.release.train.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
 
     <kotlin.version>1.5.10</kotlin.version>
