@@ -1,24 +1,23 @@
 #!/usr/bin/env groovy
 env.CI = true
 
-def config = [
-    scriptVersion  : 'v7',
-    iqOrganizationName: "Team AOS",
-    credentialsId: 'github',
-    deployTo: 'maven-central',
-    openShiftBuild: false,
-    checkstyle : false,
-    javaVersion : 11,
-    docs: false,
-    sonarQube: false,
-    pipelineScript : 'https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git',
-    versionStrategy : [
-        [branch: 'master', versionHint: '1']
-    ]
-]
-
-fileLoader.withGit(config.pipelineScript, config.scriptVersion) {
-  jenkinsfile = fileLoader.load('templates/leveransepakke')
+def version = 'v7'
+fileLoader.withGit('https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git', version) {
+    jenkinsfile = fileLoader.load('templates/leveransepakke')
 }
 
-jenkinsfile.run(config.scriptVersion, config)
+def overrides = [
+    credentialsId: 'github',
+    javaVersion: "11",
+    docs: false,
+    sonarQube: false,
+    openShiftBuild: false,
+    versionStrategy: [
+            [ branch: 'master', versionHint: '1']
+    ],
+    iqOrganizationName: "Team AOS",
+    compilePropertiesIq: "-x test",
+    chatRoom: "#aos-notifications"
+]
+
+jenkinsfile.run(version, overrides)

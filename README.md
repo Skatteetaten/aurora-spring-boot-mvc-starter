@@ -1,6 +1,6 @@
 # Aurora Spring Boot MVC Starter
 
-A Spring Boot starter for MVC related functionality.
+A Spring Boot (2.5.1) starter for MVC related functionality.
 This starter is has a dependency on the [base-starter](https://github.com/Skatteetaten/aurora-spring-boot-base-starter).
 
 ## How to use
