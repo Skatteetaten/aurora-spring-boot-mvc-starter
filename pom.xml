@@ -64,8 +64,8 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <basestarter.version>1.2.14</basestarter.version>
-    <springboot.version>2.5.5</springboot.version>
+    <basestarter.version>1.2.16</basestarter.version>
+    <springboot.version>2.5.6</springboot.version>
     <springcloud.release.train.version>2020.0.4</springcloud.release.train.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
 
@@ -76,8 +76,8 @@
     <assertk.version>0.25</assertk.version>
     <mockmvcext.version>1.1.7</mockmvcext.version>
     <okhttp.version>4.9.2</okhttp.version>
-    <testcontainers.version>1.16.0</testcontainers.version>
-    <awaitility.version>4.1.0</awaitility.version>
+    <testcontainers.version>1.16.2</testcontainers.version>
+    <awaitility.version>4.1.1</awaitility.version>
   </properties>
 
   <dependencyManagement>
