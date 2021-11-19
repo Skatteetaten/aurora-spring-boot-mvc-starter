@@ -68,7 +68,6 @@
     <springboot.version>2.5.6</springboot.version>
     <springcloud.release.train.version>2020.0.4</springcloud.release.train.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
-
     <kotlin.version>1.6.0</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
     <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
