@@ -64,7 +64,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <basestarter.version>1.3.0</basestarter.version>
+    <basestarter.version>1.3.1</basestarter.version>
     <springboot.version>2.5.6</springboot.version>
     <springcloud.release.train.version>2020.0.4</springcloud.release.train.version>
     <mdcfilter.version>2.1.2</mdcfilter.version>
