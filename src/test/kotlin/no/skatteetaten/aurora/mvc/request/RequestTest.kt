@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
+import java.util.UUID
 
 @SpringBootApplication
 open class RequestTestMain
@@ -31,7 +32,9 @@ open class RequestTestController {
 
     @GetMapping("/test")
     fun getText() = mapOf(
-        "mdc" to MDC.get(KORRELASJONS_ID),
+        "mdc_Korrelasjonsid" to MDC.get(KORRELASJONS_ID),
+        "mdc_Klientid" to MDC.get("Klientid"),
+        "mdc_Meldingsid" to MDC.get("Meldingsid"),
         "span" to BaggageField.getByName(KORRELASJONS_ID).value
     ).also {
         LoggerFactory.getLogger(RequestTestController::class.java).info("Clearing MDC, content: $it")
@@ -58,14 +61,34 @@ class RequestTest {
         fun `MDC and BaggageField contains Korrelasjonsid`() {
             val response = sendRequest(port)
 
-            assertThat(response["mdc"]).isNotNull().isNotEmpty()
+            assertThat(response["mdc_Korrelasjonsid"]).isNotNull().isNotEmpty()
             assertThat(response["span"]).isNotNull().isNotEmpty()
         }
 
         @Test
         fun `MDC and BaggageField is equal`() {
             val response = sendRequest(port)
-            assertThat(response["mdc"]).isEqualTo(response["span"])
+            assertThat(response["mdc_Korrelasjonsid"]).isEqualTo(response["span"])
+        }
+
+        @Test
+        fun `Klientid from request is put on MDC`() {
+            val response = sendRequest(port, mapOf("Klientid" to "klient/1.2"))
+            assertThat(response["mdc_Klientid"]).isEqualTo("klient/1.2")
+        }
+
+        @Test
+        fun `Korrelasjonsid from request is put on MDC`() {
+            val korrelasjonsId = UUID.randomUUID().toString()
+            val response = sendRequest(port, mapOf("Korrelasjonsid" to korrelasjonsId))
+            assertThat(response["mdc_Korrelasjonsid"]).isEqualTo(korrelasjonsId)
+        }
+
+        @Test
+        fun `Meldingsid from request is put on MDC`() {
+            val meldingsId = UUID.randomUUID().toString()
+            val response = sendRequest(port, mapOf("Meldingsid" to meldingsId))
+            assertThat(response["mdc_Meldingsid"]).isEqualTo(meldingsId)
         }
     }
 
@@ -86,7 +109,7 @@ class RequestTest {
         fun `MDC and Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
-            assertThat(response["mdc"]).isNull()
+            assertThat(response["mdc_Korrelasjonsid"]).isNull()
             assertThat(response["span"]).isNull()
         }
     }
@@ -108,7 +131,7 @@ class RequestTest {
         fun `Korrelasjonsid is set`() {
             val response = sendRequest(port)
 
-            assertThat(response["mdc"]).isNotNull().isNotEmpty()
+            assertThat(response["mdc_Korrelasjonsid"]).isNotNull().isNotEmpty()
             assertThat(response["span"]).isNotNull().isNotEmpty()
         }
     }
@@ -130,7 +153,7 @@ class RequestTest {
         fun `Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
-            assertThat(response["mdc"]).isNull()
+            assertThat(response["mdc_Korrelasjonsid"]).isNull()
             assertThat(response["span"]).isNull()
         }
     }

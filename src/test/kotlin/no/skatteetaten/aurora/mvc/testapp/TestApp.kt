@@ -4,6 +4,8 @@ import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
 import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.KLIENT_ID
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.MELDINGS_ID
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -35,6 +37,8 @@ open class TestConfig {
 @RestController
 open class TestController(private val restTemplate: RestTemplate) {
 
+    private val logger = LoggerFactory.getLogger(TestController::class.java)
+
     @GetMapping
     fun get(): Map<String, Any> {
         val korrelasjonsid = RequestKorrelasjon.getId()
@@ -53,6 +57,7 @@ open class TestController(private val restTemplate: RestTemplate) {
         checkNotNull(headers[MELDINGS_ID])
         checkNotNull(headers[KLIENT_ID])
         checkNotNull(headers[USER_AGENT])
+        logger.info("MDC: ${MDC.getMDCAdapter().copyOfContextMap}")
         return headers.toSingleValueMap()
     }
 }
