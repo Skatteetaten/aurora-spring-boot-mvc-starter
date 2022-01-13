@@ -3,7 +3,7 @@ package no.skatteetaten.aurora.mvc.testapp
 import brave.baggage.BaggageField
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
 import org.slf4j.MDC
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -52,7 +52,7 @@ open class TestController(private val restTemplate: RestTemplate) {
     @GetMapping("/headers")
     fun getHeaders(@RequestHeader headers: HttpHeaders): Map<String, String> {
         checkNotNull(headers[KORRELASJONSID_FIELD])
-        checkNotNull(headers[MELDINGID_FIELD])
+        checkNotNull(headers[MELDINGSID_FIELD])
         checkNotNull(headers[KLIENTID_FIELD])
         checkNotNull(headers[USER_AGENT])
         return headers.toSingleValueMap().toMutableMap().apply {

@@ -9,7 +9,7 @@ import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer
 import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,20 +57,9 @@ class MvcStarterApplicationConfigTest {
         }.first()
 
         val headers = request?.headers!!
-        assertThat(headers[KORRELASJONSID_FIELD])
-            .isNotNull()
-            .isNotEmpty()
-
-        assertThat(headers[KLIENTID_FIELD])
-            .isNotNull()
-            .isEqualTo("mvc-starter")
-
-        assertThat(headers[MELDINGID_FIELD])
-            .isNotNull()
-            .isNotEmpty()
-
-        assertThat(headers[HttpHeaders.USER_AGENT])
-            .isNotNull()
-            .isEqualTo("mvc-starter")
+        assertThat(headers[KORRELASJONSID_FIELD]).isNotNull().isNotEmpty()
+        assertThat(headers[KLIENTID_FIELD]).isNotNull().isEqualTo("mvc-starter")
+        assertThat(headers[MELDINGSID_FIELD]).isNotNull().isNotEmpty()
+        assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("mvc-starter")
     }
 }

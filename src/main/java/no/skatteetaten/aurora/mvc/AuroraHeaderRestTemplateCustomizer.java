@@ -2,7 +2,7 @@ package no.skatteetaten.aurora.mvc;
 
 import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD;
 import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD;
 
 import java.util.UUID;
 
@@ -31,15 +31,15 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
     }
 
     private void addCorrelationId(HttpRequest request) {
-        request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, getKorrelasjonsid());
-    }
-
-    private String getKorrelasjonsid() {
         BaggageField field = BaggageField.getByName(KORRELASJONSID_FIELD);
+        String korrelasjonsid;
         if (field == null) {
-            return UUID.randomUUID().toString();
+            korrelasjonsid = UUID.randomUUID().toString();
+        } else {
+            korrelasjonsid = field.getValue();
         }
-        return field.getValue();
+
+        request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
     }
 
     private void addClientId(HttpRequest request) {
@@ -50,6 +50,6 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
     }
 
     private void addMessageId(HttpRequest request) {
-        request.getHeaders().add(MELDINGID_FIELD, UUID.randomUUID().toString());
+        request.getHeaders().add(MELDINGSID_FIELD, UUID.randomUUID().toString());
     }
 }
