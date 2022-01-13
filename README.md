@@ -16,13 +16,6 @@ Include the starter as a dependency
 
 ## Features
 
-### Register the Aurora Header MDC Filter
-
-The starter will register the Aurora Header MDC Filter. The registration can be disabled with the property
-```properties
-aurora.mvc.header.filter.enabled = false
-```
-
 [Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth) is included by the base starter.
 It is a distributed tracing solution for Spring Boot apps. Spring Sleuth will generate its own IDs, however it can be useful to see how these IDs related to the `Korrelasjonsid` header.
 

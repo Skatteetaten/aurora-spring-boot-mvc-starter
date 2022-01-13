@@ -1,9 +1,10 @@
 package no.skatteetaten.aurora.mvc.testapp
 
-import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
-import no.skatteetaten.aurora.filter.logging.RequestKorrelasjon
-import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.KLIENT_ID
-import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer.MELDINGS_ID
+import brave.baggage.BaggageField
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
+import org.slf4j.MDC
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -37,8 +38,9 @@ open class TestController(private val restTemplate: RestTemplate) {
 
     @GetMapping
     fun get(): Map<String, Any> {
-        val korrelasjonsid = RequestKorrelasjon.getId()
+        val korrelasjonsid = BaggageField.getByName(KORRELASJONSID_FIELD)
         checkNotNull(korrelasjonsid)
+        check(korrelasjonsid.value == MDC.get(KORRELASJONSID_FIELD))
 
         val requestHeaders = restTemplate.getForEntity<Map<String, String>>("http://localhost:8080/headers")
         return mapOf(
@@ -49,10 +51,12 @@ open class TestController(private val restTemplate: RestTemplate) {
 
     @GetMapping("/headers")
     fun getHeaders(@RequestHeader headers: HttpHeaders): Map<String, String> {
-        checkNotNull(headers[KORRELASJONS_ID])
-        checkNotNull(headers[MELDINGS_ID])
-        checkNotNull(headers[KLIENT_ID])
+        checkNotNull(headers[KORRELASJONSID_FIELD])
+        checkNotNull(headers[MELDINGSID_FIELD])
+        checkNotNull(headers[KLIENTID_FIELD])
         checkNotNull(headers[USER_AGENT])
-        return headers.toSingleValueMap()
+        return headers.toSingleValueMap().toMutableMap().apply {
+            put("MDC-$KORRELASJONSID_FIELD", MDC.get("Korrelasjonsid"))
+        }
     }
 }
