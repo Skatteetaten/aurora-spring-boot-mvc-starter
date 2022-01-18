@@ -6,13 +6,11 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import brave.baggage.BaggageField
-import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
-import no.skatteetaten.aurora.mvc.AuroraRequestParser
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.*
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -46,7 +44,6 @@ open class RequestTestController {
     }
 }
 
-@Disabled
 class RequestTest {
 
     @Nested
