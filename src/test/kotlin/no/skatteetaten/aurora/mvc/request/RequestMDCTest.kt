@@ -35,7 +35,7 @@ class TestMdcController {
 }
 
 @SpringBootTest(classes = [TestMain::class, TestMdcController::class], webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TestAppMdc {
+class RequestMDCTest {
 
     @LocalServerPort
     private lateinit var port: String
