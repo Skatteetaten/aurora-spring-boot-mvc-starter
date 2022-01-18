@@ -7,8 +7,11 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import brave.baggage.BaggageField
 import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
+import no.skatteetaten.aurora.mvc.AuroraRequestParser
+import no.skatteetaten.aurora.mvc.AuroraRequestParser.*
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -32,10 +35,10 @@ open class RequestTestController {
 
     @GetMapping("/test")
     fun getText() = mapOf(
-        "mdc_Korrelasjonsid" to MDC.get(KORRELASJONS_ID),
-        "mdc_Klientid" to MDC.get("Klientid"),
-        "mdc_Meldingsid" to MDC.get("Meldingsid"),
-        "span" to BaggageField.getByName(KORRELASJONS_ID).value
+        "mdc_Korrelasjonsid" to MDC.get(KORRELASJONSID_FIELD),
+        "mdc_Klientid" to MDC.get(KLIENTID_FIELD),
+        "mdc_Meldingsid" to MDC.get(MELDINGSID_FIELD),
+        "span" to BaggageField.getByName(KORRELASJONSID_FIELD).value
     ).also {
         LoggerFactory.getLogger(RequestTestController::class.java).info("Clearing MDC, content: $it")
         MDC.clear()

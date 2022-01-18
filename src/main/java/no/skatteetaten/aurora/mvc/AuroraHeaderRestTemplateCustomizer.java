@@ -30,7 +30,7 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
         });
     }
 
-    private void addCorrelationId(HttpRequest request) {
+    protected void addCorrelationId(HttpRequest request) {
         BaggageField field = BaggageField.getByName(KORRELASJONSID_FIELD);
         String korrelasjonsid;
         if (field == null) {
@@ -42,14 +42,14 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
         request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
     }
 
-    private void addClientId(HttpRequest request) {
+    protected void addClientId(HttpRequest request) {
         if (appName != null) {
             request.getHeaders().add(KLIENTID_FIELD, appName);
             request.getHeaders().add(HttpHeaders.USER_AGENT, appName);
         }
     }
 
-    private void addMessageId(HttpRequest request) {
+    protected void addMessageId(HttpRequest request) {
         request.getHeaders().add(MELDINGSID_FIELD, UUID.randomUUID().toString());
     }
 }
