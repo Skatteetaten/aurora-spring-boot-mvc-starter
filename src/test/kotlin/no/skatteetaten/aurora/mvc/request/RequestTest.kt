@@ -10,6 +10,7 @@ import no.skatteetaten.aurora.filter.logging.AuroraHeaderFilter.KORRELASJONS_ID
 import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import no.skatteetaten.aurora.mvc.AuroraRequestParser.*
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
@@ -45,6 +46,7 @@ open class RequestTestController {
     }
 }
 
+@Disabled
 class RequestTest {
 
     @Nested
