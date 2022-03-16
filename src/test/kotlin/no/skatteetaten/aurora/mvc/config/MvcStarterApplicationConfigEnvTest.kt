@@ -11,7 +11,7 @@ import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
 import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import okhttp3.mockwebserver.MockWebServer
 
-@TestPropertySource(properties = ["AURORA_HEADER_KLIENTID=segment-mvc-starter/1.0.0"])
+@TestPropertySource(properties = ["AURORA_KLIENTID=segment/mvc-starter/1.0.0"])
 class MvcStarterApplicationConfigEnvTest : AbstractMvcStarterApplicationConfigTest() {
 
     @Test
@@ -22,7 +22,7 @@ class MvcStarterApplicationConfigEnvTest : AbstractMvcStarterApplicationConfigTe
         }.first()
 
         val headers = request?.headers!!
-        assertThat(headers[AuroraRequestParser.KLIENTID_FIELD]).isNotNull().isEqualTo("segment-mvc-starter/1.0.0")
-        assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("segment-mvc-starter/1.0.0")
+        assertThat(headers[AuroraRequestParser.KLIENTID_FIELD]).isNotNull().isEqualTo("segment/mvc-starter/1.0.0")
+        assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("segment/mvc-starter/1.0.0")
     }
 }
