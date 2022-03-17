@@ -11,7 +11,7 @@ import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
 import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import okhttp3.mockwebserver.MockWebServer
 
-@TestPropertySource(properties = ["AURORA_KLIENTID=segment/mvc-starter/1.0.0"])
+@TestPropertySource(properties = ["aurora.klientid=segment/mvc-starter/1.0.0"])
 class MvcStarterApplicationConfigEnvTest : AbstractMvcStarterApplicationConfigTest() {
 
     @Test
