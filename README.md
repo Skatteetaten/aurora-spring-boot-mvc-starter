@@ -42,7 +42,7 @@ aurora.mvc.header.resttemplate.interceptor.enabled = true
 The headers set are based on these values:
 - `Korrelasjonsid` taken from the `RequestKorrelasjon` class. If not found, it will generate a new ID.
 - `Medlindsid` will always generate a new ID.
-- `Klientid` set from the environment variable AURORA_HEADER_KLIENTID or uses application name as fallback (using the `spring.application.name` property). The `User-Agent` header will also be set to the same value.
+- `Klientid` set from the environment variable AURORA_KLIENTID or uses application name as fallback (using the `spring.application.name` property). The `User-Agent` header will also be set to the same value.
 
 
 ### Graceful Shutdown Handler for Tomcat
