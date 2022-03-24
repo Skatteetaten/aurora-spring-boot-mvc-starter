@@ -6,7 +6,7 @@ Formatet i denne filen er basert på Keep a Changelog og prosjektet følger Sema
 [1.4.5] - 2022-03-24
 Changed
 Oppgraderte til SpringBoot versjon 2.6.4.
-Oppgraderte versjon av aurora-spring-boot-base-starter.
+Oppgraderte versjon av aurora-spring-boot-base-starter versjon 1.3.6.
 
 Added
 CHANGELOG.md for å dokumentere endringer.
