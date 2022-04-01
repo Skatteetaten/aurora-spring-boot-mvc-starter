@@ -12,7 +12,7 @@ import no.skatteetaten.aurora.mvc.AuroraRequestParser
 import okhttp3.mockwebserver.MockWebServer
 
 @TestPropertySource(properties = ["aurora.klientid=segment/mvc-starter/1.0.0"])
-class MvcStarterApplicationConfigEnvTest : AbstractMvcStarterApplicationConfigTest() {
+class MvcStarterApplicationConfigKlientIdEnvTest : AbstractMvcStarterApplicationConfigTest() {
 
     @Test
     fun `Set KlientID from env`() {
