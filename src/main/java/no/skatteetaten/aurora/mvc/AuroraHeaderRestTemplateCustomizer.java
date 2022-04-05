@@ -4,6 +4,7 @@ import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD;
 import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD;
 import static no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.boot.web.client.RestTemplateCustomizer;
@@ -31,13 +32,9 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
     }
 
     protected void addCorrelationId(HttpRequest request) {
-        BaggageField field = BaggageField.getByName(KORRELASJONSID_FIELD);
-        String korrelasjonsid;
-        if (field == null) {
-            korrelasjonsid = UUID.randomUUID().toString();
-        } else {
-            korrelasjonsid = field.getValue();
-        }
+        String korrelasjonsid = Optional.ofNullable(BaggageField.getByName(KORRELASJONSID_FIELD))
+            .map(BaggageField::getValue)
+            .orElseGet(() -> UUID.randomUUID().toString());
 
         request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
     }
