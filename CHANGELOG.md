@@ -5,11 +5,11 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
-## [1.5.0] - 2022-04-04
+## [1.5.0] - 2022-04-05
 
 ### Added
 
-- La til støtte for bruk av AURORA_KLIENTID miljøvariabelen.
+- La til støtte for bruk av AURORA_KLIENTID miljøvariabelen i AuroraHeaderRestTemplateCustomizer.
 
 ## [1.4.7] - 2022-04-01
 
