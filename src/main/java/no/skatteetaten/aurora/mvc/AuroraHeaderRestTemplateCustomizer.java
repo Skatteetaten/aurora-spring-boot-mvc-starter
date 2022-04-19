@@ -32,11 +32,15 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
     }
 
     protected void addCorrelationId(HttpRequest request) {
-        String korrelasjonsid = Optional.ofNullable(BaggageField.getByName(KORRELASJONSID_FIELD))
+        String korrelasjonsid = Optional.ofNullable(getBaggageField())
             .map(BaggageField::getValue)
             .orElseGet(() -> UUID.randomUUID().toString());
 
         request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
+    }
+
+    BaggageField getBaggageField() {
+        return BaggageField.getByName(KORRELASJONSID_FIELD);
     }
 
     protected void addClientId(HttpRequest request) {
