@@ -11,7 +11,7 @@ import brave.baggage.BaggageField
 
 class AuroraHeaderRestTemplateCustomizerTest {
     @Test
-    fun `If KorrelasjonsId is declared, but not instansiated, give it a new value`() {
+    fun `If KorrelasjonsId is declared, but not instantiated, give it a new value`() {
         val request = ClientHttpRequestFactorySupplier().get().createRequest(URI("http://localhost"), HttpMethod.GET)
         val auroraHeaderRestTemplateCustomizer = object : AuroraHeaderRestTemplateCustomizer("test") {
             override fun getBaggageField(): BaggageField {
