@@ -322,9 +322,6 @@
                 <requireMavenVersion>
                   <version>3.8.3</version>
                 </requireMavenVersion>
-                <requireJavaVersion>
-                  <version>${java.version}</version>
-                </requireJavaVersion>
                 <DependencyConvergence />
                 <requirePluginVersions>
                   <message>Best Practice is to always define plugin versions!</message>
