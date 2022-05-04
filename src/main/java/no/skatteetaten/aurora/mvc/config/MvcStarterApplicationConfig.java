@@ -19,9 +19,13 @@ public class MvcStarterApplicationConfig {
     @Bean
     @ConditionalOnProperty(prefix = "aurora.mvc.header.resttemplate.interceptor", name = "enabled")
     public AuroraHeaderRestTemplateCustomizer auroraRestTemplateCustomizer(
-        @Value("${spring.application.name:}") String appName
+        @Value("${spring.application.name:}") String appName,
+        @Value("${app.version:}") String appVersion,
+        @Value("${aurora.klientid:}") String klientIdEnv
     ) {
-        return new AuroraHeaderRestTemplateCustomizer(appName);
+        String fallbackKlientId = !appVersion.isBlank() ? String.format("%s/%s", appName, appVersion) : appName;
+        String klientId = !klientIdEnv.isBlank() ? klientIdEnv : fallbackKlientId;
+        return new AuroraHeaderRestTemplateCustomizer(klientId);
     }
 
     @Bean(HttpServerRequestParser.NAME)
