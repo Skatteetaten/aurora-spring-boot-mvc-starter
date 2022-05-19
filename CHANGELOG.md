@@ -5,6 +5,13 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
+## [1.6.1] - 2022-05-19
+
+### Changed
+
+- Oppgraderte til SpringBoot til versjon 2.6.8.
+- Oppgraderte versjon av aurora-spring-boot-base-starter til versjon 1.3.12.
+
 ## [1.5.2] - 2022-05-04
 
 ### Changed
