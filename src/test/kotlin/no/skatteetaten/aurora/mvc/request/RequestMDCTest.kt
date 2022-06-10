@@ -1,4 +1,4 @@
-package no.skatteetaten.aurora.mvc.testapp
+package no.skatteetaten.aurora.mvc.request
 
 import assertk.assertThat
 import assertk.assertions.isNotNull
@@ -6,6 +6,7 @@ import brave.baggage.BaggageField
 import brave.handler.SpanHandler
 import brave.http.HttpRequestParser
 import com.fasterxml.jackson.databind.JsonNode
+import no.skatteetaten.aurora.mvc.testapp.TestMain
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
 import org.springframework.boot.test.context.SpringBootTest
