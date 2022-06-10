@@ -81,7 +81,12 @@ class MvcStarterApplicationConfigTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-    @TestPropertySource(properties = ["trace.auth.username=test123", "trace.auth.password=test234", "aurora.klientid=segment/mvc-starter/1.0.0"])
+    @TestPropertySource(
+        properties = [
+            "trace.auth.username=test123",
+            "trace.auth.password=test234",
+            "aurora.klientid=segment/mvc-starter/1.0.0"]
+    )
     inner class TraceAuthEnabled : AbstractMvcStarterApplicationConfigTest() {
         @Autowired(required = false)
         private var provider: ZipkinRestTemplateProvider? = null
