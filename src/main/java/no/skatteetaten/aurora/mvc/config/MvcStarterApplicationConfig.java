@@ -1,11 +1,16 @@
 package no.skatteetaten.aurora.mvc.config;
 
+import java.nio.charset.Charset;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.sleuth.instrument.web.HttpServerRequestParser;
+import org.springframework.cloud.sleuth.zipkin2.ZipkinRestTemplateProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 
 import brave.http.HttpRequestParser;
 import no.skatteetaten.aurora.mvc.AuroraHeaderRestTemplateCustomizer;
@@ -16,6 +21,8 @@ import no.skatteetaten.aurora.mvc.AuroraSpanHandler;
 @Configuration
 public class MvcStarterApplicationConfig {
 
+    public static final String HEADER_ORGID = "X-Scope-OrgID";
+
     @Bean
     @ConditionalOnProperty(prefix = "aurora.mvc.header.resttemplate.interceptor", name = "enabled")
     public AuroraHeaderRestTemplateCustomizer auroraRestTemplateCustomizer(
@@ -23,8 +30,8 @@ public class MvcStarterApplicationConfig {
         @Value("${app.version:}") String appVersion,
         @Value("${aurora.klientid:}") String klientIdEnv
     ) {
-        String fallbackKlientId = !appVersion.isBlank() ? String.format("%s/%s", appName, appVersion) : appName;
-        String klientId = !klientIdEnv.isBlank() ? klientIdEnv : fallbackKlientId;
+        String fallbackKlientId = appVersion.isBlank() ? appName : String.format("%s/%s", appName, appVersion);
+        String klientId = klientIdEnv.isBlank() ? fallbackKlientId : klientIdEnv;
         return new AuroraHeaderRestTemplateCustomizer(klientId);
     }
 
@@ -40,4 +47,24 @@ public class MvcStarterApplicationConfig {
         return new AuroraSpanHandler();
     }
 
+    @Bean
+    @ConditionalOnProperty(prefix = "trace.auth", name = { "username", "password" })
+    public ZipkinRestTemplateProvider zipkinWebClientBuilderProvider(
+        @Value("${trace.auth.username}") String username,
+        @Value("${trace.auth.password}") String password,
+        @Value("${aurora.klientid:}") String klientId,
+        RestTemplateBuilder builder
+    ) {
+        return () -> {
+            String basicAuth = HttpHeaders.encodeBasicAuth(username, password, Charset.defaultCharset());
+            RestTemplateBuilder builderWithHeaders = builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Basic " + basicAuth);
+
+            if (klientId != null && klientId.contains("/")) {
+                String affiliation = klientId.substring(0, klientId.indexOf("/"));
+                builderWithHeaders = builderWithHeaders.defaultHeader(HEADER_ORGID, affiliation);
+            }
+
+            return builderWithHeaders.build();
+        };
+    }
 }
