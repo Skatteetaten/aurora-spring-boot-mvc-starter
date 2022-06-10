@@ -56,8 +56,7 @@ public class MvcStarterApplicationConfig {
         RestTemplateBuilder builder
     ) {
         return () -> {
-            String basicAuth = HttpHeaders.encodeBasicAuth(username, password, Charset.defaultCharset());
-            RestTemplateBuilder builderWithHeaders = builder.defaultHeader(HttpHeaders.AUTHORIZATION, "Basic " + basicAuth);
+            RestTemplateBuilder builderWithHeaders = builder.basicAuthentication(username, password);
 
             if (klientId != null && klientId.contains("/")) {
                 String affiliation = klientId.substring(0, klientId.indexOf("/"));
