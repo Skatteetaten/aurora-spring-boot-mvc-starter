@@ -5,7 +5,7 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
-## [1.6.2] - 2022-06-15
+## [1.6.3] - 2022-06-15
 - Set trace tag prefix to `skatteetaten`
 - General tags are now set with AuroraSpanHandler
 
