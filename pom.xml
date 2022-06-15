@@ -41,24 +41,6 @@
     <developerConnection>git@github.com:Skatteetaten/aurora-spring-boot-mvc-starter.git</developerConnection>
   </scm>
 
-  <developers>
-    <developer>
-      <id>bjartek</id>
-      <name>Bjarte S. Karlsen</name>
-      <email>bjarte.karlsen@skatteetaten.no</email>
-    </developer>
-    <developer>
-      <id>mikand13</id>
-      <name>Anders Mikkelsen</name>
-      <email>anders.mikkelsen@skatteetaten.no</email>
-    </developer>
-    <developer>
-      <id>jarlehansen</id>
-      <name>Jarle Hansen</name>
-      <email>jarle.hansen@skatteetaten.no</email>
-    </developer>
-  </developers>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
