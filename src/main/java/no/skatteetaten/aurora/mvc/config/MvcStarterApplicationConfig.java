@@ -54,10 +54,10 @@ public class MvcStarterApplicationConfig {
     public ZipkinRestTemplateProvider zipkinWebClientBuilderProvider(
         @Value("${trace.auth.username}") String username,
         @Value("${trace.auth.password}") String password,
-        @Value("${aurora.klientid:}") String klientId,
-        RestTemplateBuilder builder
+        @Value("${aurora.klientid:}") String klientId
     ) {
         return () -> {
+            RestTemplateBuilder builder = new RestTemplateBuilder();
             RestTemplateBuilder builderWithHeaders = builder.basicAuthentication(username, password);
 
             if (klientId != null && klientId.contains("/")) {
