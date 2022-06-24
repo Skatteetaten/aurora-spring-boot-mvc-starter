@@ -50,5 +50,4 @@ class RequestMDCTest {
             assertThat(korrelasjonsid).isNotNull()
         }
     }
-
 }
