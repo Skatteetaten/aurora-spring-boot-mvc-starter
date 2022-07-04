@@ -5,13 +5,11 @@ plugins {
 }
 
 aurora {
-    useGitProperties
-    useLatestVersions
-    useVersions
-    useSonar
-    useGradleLogger
     useJavaDefaults
-    useKotlinDefaults
+    useLibDefaults
+    useKotlin {
+        useKtLint
+    }
     useSpringBoot
 
     features {
