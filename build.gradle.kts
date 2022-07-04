@@ -19,7 +19,6 @@ aurora {
 
 dependencies {
     api("org.springframework.cloud:spring-cloud-starter-sleuth:3.1.3")
-    api("io.zipkin.brave:brave:5.13.9")
     api("org.springframework.cloud:spring-cloud-sleuth-zipkin:3.1.3")
 
     api("org.springframework.boot:spring-boot-starter-web")
