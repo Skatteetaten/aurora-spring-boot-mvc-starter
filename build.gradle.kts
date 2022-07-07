@@ -1,15 +1,11 @@
 plugins {
     `java-library`
-    kotlin("jvm") version "1.6.21"
     id("no.skatteetaten.gradle.aurora") version "4.4.25"
 }
 
 aurora {
     useJavaDefaults
     useLibDefaults
-    useKotlin {
-        useKtLint
-    }
     useSpringBoot
 
     features {
@@ -18,14 +14,11 @@ aurora {
 }
 
 dependencies {
-
     api("org.springframework.boot:spring-boot-starter-web")
-    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.3.12") {
-        exclude(group = "io.zipkin.aws", module = "brave-propagation-aws")
-    }
+    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.4.0")
     api("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21")
+    testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
