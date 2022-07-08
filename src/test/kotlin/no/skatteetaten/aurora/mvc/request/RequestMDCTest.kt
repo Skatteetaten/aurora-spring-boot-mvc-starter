@@ -10,7 +10,7 @@ import no.skatteetaten.aurora.mvc.testapp.TestMain
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 import org.springframework.web.bind.annotation.GetMapping

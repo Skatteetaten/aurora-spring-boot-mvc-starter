@@ -1,10 +1,10 @@
 plugins {
     `java-library`
-    id("no.skatteetaten.gradle.aurora") version "4.4.25"
+    kotlin("jvm") version "1.7.0"
+    id("no.skatteetaten.gradle.aurora") version "4.5.0"
 }
 
 aurora {
-    useJavaDefaults
     useLibDefaults
     useSpringBoot
 
@@ -18,7 +18,6 @@ dependencies {
     api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.4.0")
     api("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
