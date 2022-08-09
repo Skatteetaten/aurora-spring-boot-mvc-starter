@@ -7,7 +7,7 @@ og prosjektet følger [Semantic Versioning](http://semver.org/).
 
 ## [] - 2022-07-05
 - Oppdatert dependencies
-- Bruker gradle i stedet formaven for å bygge starter
+- Bruker gradle i stedet for maven for å bygge starter
 
 ## [1.6.4] - 2022-06-22
 - Fikset feil hvor trace data ble inkludert i zipkin requests

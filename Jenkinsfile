@@ -4,7 +4,7 @@ def config = [
     pipelineScript: 'https://git.aurora.skead.no/scm/ao/aurora-pipeline-scripts.git',
     credentialsId: 'github',
     javaVersion: "11",
-    jacoco: false,
+    jacoco: true,
     docs: false,
     sonarQube: false,
     openShiftBuild: false,
