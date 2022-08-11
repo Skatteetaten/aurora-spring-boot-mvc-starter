@@ -37,7 +37,7 @@ open class TestConfig {
 open class TestController(private val restTemplate: RestTemplate) {
 
     @GetMapping
-    fun get(): Map<String, Any> {
+    fun get(): Map<String, Any?> {
         val korrelasjonsid = BaggageField.getByName(KORRELASJONSID_FIELD)
         checkNotNull(korrelasjonsid)
         check(korrelasjonsid.value == MDC.get(KORRELASJONSID_FIELD))

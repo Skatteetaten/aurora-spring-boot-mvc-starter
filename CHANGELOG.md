@@ -5,12 +5,16 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
+## [] - 2022-07-05
+- Oppdatert dependencies
+- Bruker gradle i stedet for maven for å bygge starter
+
 ## [1.6.4] - 2022-06-22
-- Fixed bug where trace data was included in zipkin requests
+- Fikset feil hvor trace data ble inkludert i zipkin requests
 
 ## [1.6.3] - 2022-06-15
-- Set trace tag prefix to `skatteetaten`
-- General tags are now set with AuroraSpanHandler
+- Trace tag prefix to `skatteetaten`
+- Generelle trace tagger er nå satt i AuroraSpanHandler
 
 ## [1.6.1] - 2022-05-19
 
