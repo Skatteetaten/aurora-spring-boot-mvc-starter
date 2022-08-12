@@ -5,7 +5,7 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
-## [1.6.5] - 2022-08-11
+## [1.7.0] - 2022-08-11
 - Oppdatert dependencies
 - Bruker gradle i stedet for maven for å bygge starter
 
