@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     kotlin("jvm") version "1.7.10"
-    id("no.skatteetaten.gradle.aurora") version "4.5.3"
+    id("no.skatteetaten.gradle.aurora") version "4.5.6"
 }
 
 aurora {
@@ -16,7 +16,7 @@ aurora {
 
 dependencies {
     api("org.springframework.boot:spring-boot-starter-web")
-    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.4.1")
+    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.4.3")
     api("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
