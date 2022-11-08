@@ -32,7 +32,7 @@ dependencies {
     api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:feature_AOS_7215-SNAPSHOT")
     api("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
