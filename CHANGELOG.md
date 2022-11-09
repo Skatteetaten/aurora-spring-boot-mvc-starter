@@ -5,6 +5,10 @@ Alle viktige endringer i dette prosjektet vil bli dokumentert i denne filen.
 Formatet i denne filen er basert på [Keep a Changelog](http://keepachangelog.com/)
 og prosjektet følger [Semantic Versioning](http://semver.org/).
 
+## [1.8.0] - 2022-11-09
+- Oppdatert base-starter versjon
+- Starteren kompileres med java 8
+
 ## [1.7.2] - 2022-11-04
 - Oppdatert aurora-gradle-plugin og base-starter versjon
 
