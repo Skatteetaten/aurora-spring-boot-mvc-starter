@@ -29,7 +29,7 @@ dependencies {
     }
 
     api("org.springframework.boot:spring-boot-starter-web")
-    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:feature_AOS_7215-SNAPSHOT")
+    api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:1.5.0")
     api("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
