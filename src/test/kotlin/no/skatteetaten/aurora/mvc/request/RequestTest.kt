@@ -49,7 +49,6 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
-            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=true"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -97,7 +96,6 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
-            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=false"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -108,50 +106,6 @@ class RequestTest {
 
         @Test
         fun `MDC and Korrelasjonsid is null`() {
-            val response = sendRequest(port)
-
-            assertThat(response["mdc_Korrelasjonsid"]).isNull()
-            assertThat(response["span"]).isNull()
-        }
-    }
-
-    @Nested
-    @SpringBootTest(
-        classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
-        properties = [
-            "spring.zipkin.enabled=false",
-            "aurora.mvc.header.filter.enabled=true"
-        ],
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-    )
-    inner class ZipkinDisabled {
-        @LocalServerPort
-        private var port: Int = 0
-
-        @Test
-        fun `Korrelasjonsid is set`() {
-            val response = sendRequest(port)
-
-            assertThat(response["mdc_Korrelasjonsid"]).isNotNull().isNotEmpty()
-            assertThat(response["span"]).isNotNull().isNotEmpty()
-        }
-    }
-
-    @Nested
-    @SpringBootTest(
-        classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
-        properties = [
-            "spring.zipkin.enabled=false",
-            "aurora.mvc.header.filter.enabled=false"
-        ],
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-    )
-    inner class ZipkinAndFilterDisabled {
-        @LocalServerPort
-        private var port: Int = 0
-
-        @Test
-        fun `Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
             assertThat(response["mdc_Korrelasjonsid"]).isNull()

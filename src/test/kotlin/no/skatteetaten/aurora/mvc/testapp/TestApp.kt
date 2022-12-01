@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForEntity
 
-// The zipkin profile will connect to zipkin (run docker-compose to start local zipkin)
-// The default profile will start with zipkin disabled
 @SpringBootApplication
 open class TestMain
 
