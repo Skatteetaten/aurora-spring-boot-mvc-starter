@@ -1,8 +1,8 @@
 package no.skatteetaten.aurora.mvc;
 
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraFilter.KLIENTID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraFilter.KORRELASJONSID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraFilter.MELDINGSID_FIELD;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.client.RestTemplate;
 
-import brave.baggage.BaggageField;
+import io.opentelemetry.api.baggage.Baggage;
 
 public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomizer {
     private final String appName;
@@ -33,14 +33,13 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
 
     protected void addCorrelationId(HttpRequest request) {
         String korrelasjonsid = Optional.ofNullable(getBaggageField())
-            .map(BaggageField::getValue)
             .orElseGet(() -> UUID.randomUUID().toString());
 
         request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
     }
 
-    BaggageField getBaggageField() {
-        return BaggageField.getByName(KORRELASJONSID_FIELD);
+    String getBaggageField() {
+        return Baggage.current().getEntryValue(KORRELASJONSID_FIELD);
     }
 
     protected void addClientId(HttpRequest request) {

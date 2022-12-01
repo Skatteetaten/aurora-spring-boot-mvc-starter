@@ -1,9 +1,9 @@
 package no.skatteetaten.aurora.mvc.testapp
 
-import brave.baggage.BaggageField
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
+import io.opentelemetry.api.baggage.Baggage
+import no.skatteetaten.aurora.mvc.AuroraFilter.KLIENTID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraFilter.KORRELASJONSID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraFilter.MELDINGSID_FIELD
 import org.slf4j.MDC
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -38,9 +38,9 @@ open class TestController(private val restTemplate: RestTemplate) {
 
     @GetMapping
     fun get(): Map<String, Any?> {
-        val korrelasjonsid = BaggageField.getByName(KORRELASJONSID_FIELD)
+        val korrelasjonsid = Baggage.current().getEntryValue(KORRELASJONSID_FIELD)
         checkNotNull(korrelasjonsid)
-        check(korrelasjonsid.value == MDC.get(KORRELASJONSID_FIELD))
+        check(korrelasjonsid == MDC.get(KORRELASJONSID_FIELD))
 
         val requestHeaders = restTemplate.getForEntity<Map<String, String>>("http://localhost:8080/headers")
         return mapOf(
