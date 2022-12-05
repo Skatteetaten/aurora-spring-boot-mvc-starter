@@ -31,6 +31,7 @@ class MvcStarterApplicationConfigTest {
                 restTemplate.getForEntity<String>("http://localhost:${server.port}")
             }.first()
 
+            assertThat(restTemplate.interceptors.size).isEqualTo(1)
             val headers = request?.headers!!
             assertThat(headers[KORRELASJONSID_FIELD]).isNotNull().isNotEmpty()
             assertThat(headers[KLIENTID_FIELD]).isNotNull().isEqualTo("mvc-starter")

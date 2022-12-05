@@ -29,7 +29,7 @@ dependencies {
 
     api("org.springframework.boot:spring-boot-starter-web")
     api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:2.0.0")
-    api("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin")
