@@ -1,8 +1,8 @@
 package no.skatteetaten.aurora.mvc;
 
-import static no.skatteetaten.aurora.mvc.AuroraFilter.KLIENTID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraFilter.KORRELASJONSID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraFilter.MELDINGSID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KLIENTID;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_MELDINGSID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -35,21 +35,21 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
         String korrelasjonsid = Optional.ofNullable(getBaggageField())
             .orElseGet(() -> UUID.randomUUID().toString());
 
-        request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
+        request.getHeaders().addIfAbsent(HEADER_KORRELASJONSID, korrelasjonsid);
     }
 
     String getBaggageField() {
-        return Baggage.current().getEntryValue(KORRELASJONSID_FIELD);
+        return Baggage.current().getEntryValue(HEADER_KORRELASJONSID);
     }
 
     protected void addClientId(HttpRequest request) {
         if (appName != null) {
-            request.getHeaders().add(KLIENTID_FIELD, appName);
+            request.getHeaders().add(HEADER_KLIENTID, appName);
             request.getHeaders().add(HttpHeaders.USER_AGENT, appName);
         }
     }
 
     protected void addMessageId(HttpRequest request) {
-        request.getHeaders().add(MELDINGSID_FIELD, UUID.randomUUID().toString());
+        request.getHeaders().add(HEADER_MELDINGSID, UUID.randomUUID().toString());
     }
 }

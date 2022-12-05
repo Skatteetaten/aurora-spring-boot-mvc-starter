@@ -26,6 +26,12 @@ dependencies {
     }
     api("org.springframework.cloud:spring-cloud-sleuth-otel-autoconfigure")
     api("io.opentelemetry:opentelemetry-exporter-otlp")
+    api("io.opentelemetry:opentelemetry-api") {
+        version { strictly("1.18.0") }
+    }
+    api("io.opentelemetry:opentelemetry-context") {
+        version { strictly("1.18.0") }
+    }
 
     api("org.springframework.boot:spring-boot-starter-web")
     api("no.skatteetaten.aurora.springboot:aurora-spring-boot-base-starter:2.0.0")

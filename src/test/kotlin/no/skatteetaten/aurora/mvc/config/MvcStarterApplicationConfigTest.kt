@@ -5,9 +5,9 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import no.skatteetaten.aurora.mockmvc.extensions.mockwebserver.execute
-import no.skatteetaten.aurora.mvc.AuroraFilter.KLIENTID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraFilter.KORRELASJONSID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraFilter.MELDINGSID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KLIENTID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_MELDINGSID
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -33,9 +33,9 @@ class MvcStarterApplicationConfigTest {
 
             assertThat(restTemplate.interceptors.size).isEqualTo(1)
             val headers = request?.headers!!
-            assertThat(headers[KORRELASJONSID_FIELD]).isNotNull().isNotEmpty()
-            assertThat(headers[KLIENTID_FIELD]).isNotNull().isEqualTo("mvc-starter")
-            assertThat(headers[MELDINGSID_FIELD]).isNotNull().isNotEmpty()
+            assertThat(headers[HEADER_KORRELASJONSID]).isNotNull().isNotEmpty()
+            assertThat(headers[HEADER_KLIENTID]).isNotNull().isEqualTo("mvc-starter")
+            assertThat(headers[HEADER_MELDINGSID]).isNotNull().isNotEmpty()
             assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("mvc-starter")
         }
     }
@@ -52,7 +52,7 @@ class MvcStarterApplicationConfigTest {
             }.first()
 
             val headers = request?.headers!!
-            assertThat(headers[KLIENTID_FIELD]).isNotNull().isEqualTo("segment/mvc-starter/1.0.0")
+            assertThat(headers[HEADER_KLIENTID]).isNotNull().isEqualTo("segment/mvc-starter/1.0.0")
             assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("segment/mvc-starter/1.0.0")
         }
     }
@@ -69,7 +69,7 @@ class MvcStarterApplicationConfigTest {
             }.first()
 
             val headers = request?.headers!!
-            assertThat(headers[KLIENTID_FIELD]).isNotNull().isEqualTo("mvc-starter/1.0.0")
+            assertThat(headers[HEADER_KLIENTID]).isNotNull().isEqualTo("mvc-starter/1.0.0")
             assertThat(headers[HttpHeaders.USER_AGENT]).isNotNull().isEqualTo("mvc-starter/1.0.0")
         }
     }

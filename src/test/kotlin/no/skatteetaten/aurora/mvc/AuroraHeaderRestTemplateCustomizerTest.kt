@@ -3,7 +3,7 @@ package no.skatteetaten.aurora.mvc
 import assertk.assertThat
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
-import no.skatteetaten.aurora.mvc.AuroraFilter.KORRELASJONSID_FIELD
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID
 import org.junit.jupiter.api.Test
 import org.springframework.boot.web.client.ClientHttpRequestFactorySupplier
 import org.springframework.http.HttpMethod
@@ -19,6 +19,6 @@ class AuroraHeaderRestTemplateCustomizerTest {
             }
         }
         auroraHeaderRestTemplateCustomizer.addCorrelationId(request)
-        assertThat(request.headers[KORRELASJONSID_FIELD]!![0]).isNotNull().isNotEmpty()
+        assertThat(request.headers[HEADER_KORRELASJONSID]!![0]).isNotNull().isNotEmpty()
     }
 }

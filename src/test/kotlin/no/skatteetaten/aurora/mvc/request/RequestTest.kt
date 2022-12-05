@@ -6,6 +6,9 @@ import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import io.opentelemetry.api.baggage.Baggage
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KLIENTID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_MELDINGSID
 import no.skatteetaten.aurora.mvc.AuroraFilter
 import no.skatteetaten.aurora.mvc.AuroraFilter.*
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
@@ -33,10 +36,10 @@ open class RequestTestController {
 
     @GetMapping("/test")
     fun getText() = mapOf(
-        "mdc_Korrelasjonsid" to MDC.get(KORRELASJONSID_FIELD),
-        "mdc_Klientid" to MDC.get(KLIENTID_FIELD),
-        "mdc_Meldingsid" to MDC.get(MELDINGSID_FIELD),
-        "span" to Baggage.current().getEntryValue(KORRELASJONSID_FIELD)
+        "mdc_Korrelasjonsid" to MDC.get(HEADER_KORRELASJONSID),
+        "mdc_Klientid" to MDC.get(HEADER_KLIENTID),
+        "mdc_Meldingsid" to MDC.get(HEADER_MELDINGSID),
+        "span" to Baggage.current().getEntryValue(HEADER_KORRELASJONSID)
     ).also {
         LoggerFactory.getLogger(RequestTestController::class.java).info("Clearing MDC, content: $it")
         MDC.clear()
