@@ -30,7 +30,7 @@ dependencies {
         exclude(group = "io.opentelemetry", module = "opentelemetry-api")
         exclude(group = "io.opentelemetry", module = "opentelemetry-semconv")
         exclude(group = "org.springframework.cloud", module = "spring-cloud-sleuth-instrumentation")
-        exclude(group = "org.springframework.cloud", module = "spring-cloud-sleuth-autoconfigure:jar")
+        exclude(group = "org.springframework.cloud", module = "spring-cloud-sleuth-autoconfigure")
     }
     api("io.opentelemetry:opentelemetry-exporter-otlp")
 
