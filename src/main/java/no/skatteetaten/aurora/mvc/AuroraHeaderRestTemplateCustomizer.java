@@ -1,8 +1,8 @@
 package no.skatteetaten.aurora.mvc;
 
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD;
-import static no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KLIENTID;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID;
+import static no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_MELDINGSID;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.client.RestTemplate;
 
-import brave.baggage.BaggageField;
+import io.opentelemetry.api.baggage.Baggage;
 
 public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomizer {
     private final String appName;
@@ -33,24 +33,23 @@ public class AuroraHeaderRestTemplateCustomizer implements RestTemplateCustomize
 
     protected void addCorrelationId(HttpRequest request) {
         String korrelasjonsid = Optional.ofNullable(getBaggageField())
-            .map(BaggageField::getValue)
             .orElseGet(() -> UUID.randomUUID().toString());
 
-        request.getHeaders().addIfAbsent(KORRELASJONSID_FIELD, korrelasjonsid);
+        request.getHeaders().addIfAbsent(HEADER_KORRELASJONSID, korrelasjonsid);
     }
 
-    BaggageField getBaggageField() {
-        return BaggageField.getByName(KORRELASJONSID_FIELD);
+    String getBaggageField() {
+        return Baggage.current().getEntryValue(HEADER_KORRELASJONSID);
     }
 
     protected void addClientId(HttpRequest request) {
         if (appName != null) {
-            request.getHeaders().add(KLIENTID_FIELD, appName);
+            request.getHeaders().add(HEADER_KLIENTID, appName);
             request.getHeaders().add(HttpHeaders.USER_AGENT, appName);
         }
     }
 
     protected void addMessageId(HttpRequest request) {
-        request.getHeaders().add(MELDINGSID_FIELD, UUID.randomUUID().toString());
+        request.getHeaders().add(HEADER_MELDINGSID, UUID.randomUUID().toString());
     }
 }

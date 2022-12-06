@@ -5,10 +5,12 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotEmpty
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import brave.baggage.BaggageField
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.KLIENTID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.KORRELASJONSID_FIELD
-import no.skatteetaten.aurora.mvc.AuroraRequestParser.MELDINGSID_FIELD
+import io.opentelemetry.api.baggage.Baggage
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KLIENTID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_KORRELASJONSID
+import no.skatteetaten.aurora.mvc.AuroraConstants.HEADER_MELDINGSID
+import no.skatteetaten.aurora.mvc.AuroraFilter
+import no.skatteetaten.aurora.mvc.AuroraFilter.*
 import no.skatteetaten.aurora.mvc.config.MvcStarterApplicationConfig
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -34,10 +36,10 @@ open class RequestTestController {
 
     @GetMapping("/test")
     fun getText() = mapOf(
-        "mdc_Korrelasjonsid" to MDC.get(KORRELASJONSID_FIELD),
-        "mdc_Klientid" to MDC.get(KLIENTID_FIELD),
-        "mdc_Meldingsid" to MDC.get(MELDINGSID_FIELD),
-        "span" to BaggageField.getByName(KORRELASJONSID_FIELD).value
+        "mdc_Korrelasjonsid" to MDC.get(HEADER_KORRELASJONSID),
+        "mdc_Klientid" to MDC.get(HEADER_KLIENTID),
+        "mdc_Meldingsid" to MDC.get(HEADER_MELDINGSID),
+        "span" to Baggage.current().getEntryValue(HEADER_KORRELASJONSID)
     ).also {
         LoggerFactory.getLogger(RequestTestController::class.java).info("Clearing MDC, content: $it")
         MDC.clear()
@@ -50,7 +52,6 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
-            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=true"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -98,7 +99,6 @@ class RequestTest {
     @SpringBootTest(
         classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
         properties = [
-            "spring.zipkin.enabled=true",
             "aurora.mvc.header.filter.enabled=false"
         ],
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
@@ -109,50 +109,6 @@ class RequestTest {
 
         @Test
         fun `MDC and Korrelasjonsid is null`() {
-            val response = sendRequest(port)
-
-            assertThat(response["mdc_Korrelasjonsid"]).isNull()
-            assertThat(response["span"]).isNull()
-        }
-    }
-
-    @Nested
-    @SpringBootTest(
-        classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
-        properties = [
-            "spring.zipkin.enabled=false",
-            "aurora.mvc.header.filter.enabled=true"
-        ],
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-    )
-    inner class ZipkinDisabled {
-        @LocalServerPort
-        private var port: Int = 0
-
-        @Test
-        fun `Korrelasjonsid is set`() {
-            val response = sendRequest(port)
-
-            assertThat(response["mdc_Korrelasjonsid"]).isNotNull().isNotEmpty()
-            assertThat(response["span"]).isNotNull().isNotEmpty()
-        }
-    }
-
-    @Nested
-    @SpringBootTest(
-        classes = [RequestTestMain::class, MvcStarterApplicationConfig::class],
-        properties = [
-            "spring.zipkin.enabled=false",
-            "aurora.mvc.header.filter.enabled=false"
-        ],
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-    )
-    inner class ZipkinAndFilterDisabled {
-        @LocalServerPort
-        private var port: Int = 0
-
-        @Test
-        fun `Korrelasjonsid is null`() {
             val response = sendRequest(port)
 
             assertThat(response["mdc_Korrelasjonsid"]).isNull()

@@ -19,14 +19,21 @@ Include the starter as a dependency
 [Spring Sleuth](https://spring.io/projects/spring-cloud-sleuth) is included by the base starter.
 It is a distributed tracing solution for Spring Boot apps. Spring Sleuth will generate its own IDs, however it can be useful to see how these IDs related to the `Korrelasjonsid` header.
 
-By enabling the filter `Korrelasjonsid` set will be included in the information sent to Zipkin as a tag.
+By enabling the filter `Korrelasjonsid` set will be included in the information sent to Grafana Tempo as a tag.
 If `Korrelasjonsid` is not set, this tag will simply be skipped.
+
+`Korrelasjonsid`, `Meldingsid` and `Klientid` is set on MDC if they are present in the incoming request.
 
 Spring Sleuth is by default disabled for local development and enabled in OpenShift.
 You can override this by setting the following property:
 
 ```properties
-spring.sleuth.enabled = false
+spring.sleuth.otel.exporter.otlp.enabed = true
+```
+
+To set the url for the otel exporter:
+```properties
+spring.sleuth.otel.exporter.otlp.endpoint = <otlp-url>
 ```
 
 ### RestTemplate interceptor
