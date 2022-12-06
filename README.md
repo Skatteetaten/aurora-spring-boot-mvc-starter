@@ -1,6 +1,6 @@
 # Aurora Spring Boot MVC Starter
 
-A Spring Boot (2.6.8) starter for MVC related functionality. Supports RestTemplate and servlet (blocking calls).
+A Spring Boot starter for MVC related functionality. Supports RestTemplate and servlet (blocking calls).
 This starter is has a dependency on the [base-starter](https://github.com/Skatteetaten/aurora-spring-boot-base-starter).
 
 ## How to use
